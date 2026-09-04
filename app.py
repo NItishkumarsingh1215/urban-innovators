@@ -1,5 +1,4 @@
 import streamlit as st
-import os
 import cv2
 import pandas as pd
 import subprocess
@@ -51,6 +50,146 @@ EVIDENCE_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # =========================================================
+# FUNCTIONS
+# =========================================================
+
+def get_images_from_folder(folder):
+    """Return all supported image files from a folder."""
+
+    if not folder.exists():
+        return []
+
+    extensions = [
+        "*.jpg",
+        "*.jpeg",
+        "*.png",
+        "*.JPG",
+        "*.JPEG",
+        "*.PNG"
+    ]
+
+    images = []
+
+    for extension in extensions:
+        images.extend(folder.glob(extension))
+
+    return sorted(images, key=lambda x: x.name)
+
+
+def get_all_evidence_images():
+    """
+    Collect all evidence images.
+    Duplicate files with the same filename are shown once.
+    """
+
+    images = []
+    seen_names = set()
+
+    # Priority folders
+    priority_folders = [
+        EVIDENCE_DIR / "smart_detections",
+        EVIDENCE_DIR / "all_detections"
+    ]
+
+    for folder in priority_folders:
+
+        for image in get_images_from_folder(folder):
+
+            if image.name not in seen_names:
+
+                images.append(image)
+                seen_names.add(image.name)
+
+    # Other evidence subfolders
+    if EVIDENCE_DIR.exists():
+
+        for folder in EVIDENCE_DIR.iterdir():
+
+            if (
+                folder.is_dir()
+                and folder.name not in [
+                    "smart_detections",
+                    "all_detections"
+                ]
+            ):
+
+                for image in get_images_from_folder(folder):
+
+                    if image.name not in seen_names:
+
+                        images.append(image)
+                        seen_names.add(image.name)
+
+    # Images directly inside evidence folder
+    for image in get_images_from_folder(EVIDENCE_DIR):
+
+        if image.name not in seen_names:
+
+            images.append(image)
+            seen_names.add(image.name)
+
+    return images
+
+
+def load_detection_data():
+
+    if CSV_PATH.exists():
+
+        try:
+            return pd.read_csv(CSV_PATH)
+
+        except Exception as e:
+
+            st.error(
+                f"CSV file read nahi ho pa rahi: {e}"
+            )
+
+            return pd.DataFrame()
+
+    return pd.DataFrame()
+
+
+def get_video_info(video_path):
+
+    if not video_path.exists():
+        return None
+
+    cap = cv2.VideoCapture(str(video_path))
+
+    if not cap.isOpened():
+        return None
+
+    frame_count = int(
+        cap.get(cv2.CAP_PROP_FRAME_COUNT)
+    )
+
+    fps = cap.get(cv2.CAP_PROP_FPS)
+
+    width = int(
+        cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+    )
+
+    height = int(
+        cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+    )
+
+    duration = 0
+
+    if fps and fps > 0:
+        duration = frame_count / fps
+
+    cap.release()
+
+    return {
+        "frames": frame_count,
+        "fps": fps,
+        "width": width,
+        "height": height,
+        "duration": duration
+    }
+
+
+# =========================================================
 # CUSTOM CSS
 # =========================================================
 
@@ -76,13 +215,6 @@ st.markdown(
         font-size: 25px;
         font-weight: bold;
         margin-top: 20px;
-        margin-bottom: 15px;
-    }
-
-    .card {
-        padding: 20px;
-        border-radius: 12px;
-        background-color: #f5f5f5;
         margin-bottom: 15px;
     }
 
@@ -112,6 +244,7 @@ st.markdown(
 
 # =========================================================
 # SIDEBAR
+# IMPORTANT: page VARIABLE IS DEFINED HERE
 # =========================================================
 
 st.sidebar.title("🛠️ Navigation")
@@ -130,80 +263,6 @@ page = st.sidebar.radio(
 
 
 # =========================================================
-# FUNCTION: LOAD CSV
-# =========================================================
-
-def load_detection_data():
-
-    if CSV_PATH.exists():
-
-        try:
-
-            df = pd.read_csv(CSV_PATH)
-
-            return df
-
-        except Exception as e:
-
-            st.error(
-                f"CSV file read nahi ho pa rahi: {e}"
-            )
-
-            return pd.DataFrame()
-
-    return pd.DataFrame()
-
-
-# =========================================================
-# FUNCTION: GET VIDEO INFO
-# =========================================================
-
-def get_video_info(video_path):
-
-    if not video_path.exists():
-
-        return None
-
-    cap = cv2.VideoCapture(str(video_path))
-
-    if not cap.isOpened():
-
-        return None
-
-    frame_count = int(
-        cap.get(cv2.CAP_PROP_FRAME_COUNT)
-    )
-
-    fps = cap.get(
-        cv2.CAP_PROP_FPS
-    )
-
-    width = int(
-        cap.get(cv2.CAP_PROP_FRAME_WIDTH)
-    )
-
-    height = int(
-        cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
-    )
-
-    duration = 0
-
-    if fps and fps > 0:
-
-        duration = frame_count / fps
-
-    cap.release()
-
-    return {
-        "frames": frame_count,
-        "fps": fps,
-        "width": width,
-        "height": height,
-        "duration": duration
-    }
-
-
-# =========================================================
 # DASHBOARD PAGE
 # =========================================================
 
@@ -216,31 +275,15 @@ if page == "🏠 Dashboard":
 
     df = load_detection_data()
 
-    video_info = get_video_info(
-        VIDEO_PATH
+    video_info = get_video_info(VIDEO_PATH)
+
+    total_detections = (
+        len(df)
+        if not df.empty
+        else 0
     )
 
-    total_detections = 0
-
-    if not df.empty:
-
-        total_detections = len(df)
-
-    evidence_count = 0
-
-    smart_evidence_dir = (
-        EVIDENCE_DIR / "smart_detections"
-    )
-
-    if smart_evidence_dir.exists():
-
-        evidence_count = len(
-            list(
-                smart_evidence_dir.glob(
-                    "*.jpg"
-                )
-            )
-        )
+    evidence_images = get_all_evidence_images()
 
     col1, col2, col3, col4 = st.columns(4)
 
@@ -256,7 +299,7 @@ if page == "🏠 Dashboard":
     with col2:
 
         st.metric(
-            "🕳️ Pothole Detections",
+            "🕳️ Detection Records",
             total_detections
         )
 
@@ -264,56 +307,40 @@ if page == "🏠 Dashboard":
 
         st.metric(
             "📸 Evidence Images",
-            evidence_count
+            len(evidence_images)
         )
 
     with col4:
 
-        if video_info:
+        duration_text = "N/A"
 
+        if video_info:
             duration_text = (
                 f"{video_info['duration']:.1f} sec"
             )
-
-        else:
-
-            duration_text = "N/A"
 
         st.metric(
             "⏱️ Video Duration",
             duration_text
         )
 
-
     st.divider()
 
-
-    st.subheader(
-        "🚀 System Overview"
-    )
-
+    st.subheader("🚀 System Overview")
 
     st.write(
         """
-        This prototype analyzes urban road videos using
-        Artificial Intelligence.
-
-        The system identifies possible potholes,
-        filters detections, generates evidence images
-        and groups detections into road incidents.
+        This prototype analyzes urban road videos using Artificial
+        Intelligence. The system identifies possible potholes,
+        generates detection evidence and supports incident analysis.
         """
     )
 
-
     if video_info:
 
-        st.subheader(
-            "🎬 Video Information"
-        )
+        st.subheader("🎬 Video Information")
 
-        info_col1, info_col2, info_col3 = (
-            st.columns(3)
-        )
+        info_col1, info_col2, info_col3 = st.columns(3)
 
         info_col1.metric(
             "Total Frames",
@@ -327,11 +354,7 @@ if page == "🏠 Dashboard":
 
         info_col3.metric(
             "Resolution",
-            (
-                f"{video_info['width']}"
-                f" × "
-                f"{video_info['height']}"
-            )
+            f"{video_info['width']} × {video_info['height']}"
         )
 
 
@@ -346,28 +369,18 @@ elif page == "🎥 Road Video":
         unsafe_allow_html=True
     )
 
-
     uploaded_file = st.file_uploader(
         "Upload Road Video",
-        type=[
-            "mp4",
-            "avi",
-            "mov"
-        ]
+        type=["mp4", "avi", "mov"]
     )
-
 
     if uploaded_file is not None:
 
         save_path = (
-            UPLOAD_DIR
-            / uploaded_file.name
+            UPLOAD_DIR / uploaded_file.name
         )
 
-        with open(
-            save_path,
-            "wb"
-        ) as file:
+        with open(save_path, "wb") as file:
 
             file.write(
                 uploaded_file.getbuffer()
@@ -377,29 +390,15 @@ elif page == "🎥 Road Video":
             "Video uploaded successfully!"
         )
 
-        st.video(
-            str(save_path)
-        )
-
+        st.video(str(save_path))
 
     st.divider()
 
-
-    st.subheader(
-        "Available Road Videos"
-    )
-
-
-    video_files = list(
-        UPLOAD_DIR.glob(
-            "*"
-        )
-    )
-
+    st.subheader("Available Road Videos")
 
     valid_videos = []
 
-    for file in video_files:
+    for file in UPLOAD_DIR.glob("*"):
 
         if file.suffix.lower() in [
             ".mp4",
@@ -407,12 +406,9 @@ elif page == "🎥 Road Video":
             ".mov"
         ]:
 
-            valid_videos.append(
-                file
-            )
+            valid_videos.append(file)
 
-
-    if len(valid_videos) == 0:
+    if not valid_videos:
 
         st.warning(
             "No road videos found."
@@ -426,9 +422,7 @@ elif page == "🎥 Road Video":
             format_func=lambda x: x.name
         )
 
-        st.video(
-            str(selected_video)
-        )
+        st.video(str(selected_video))
 
 
 # =========================================================
@@ -442,14 +436,12 @@ elif page == "🤖 AI Detection":
         unsafe_allow_html=True
     )
 
-
     st.write(
         """
-        This module runs the Smart Pothole Detection
-        engine on extracted road frames.
+        Run the Smart Pothole Detection engine to analyze
+        extracted road frames and generate evidence.
         """
     )
-
 
     if st.button(
         "▶️ Run Smart Pothole Detection"
@@ -472,17 +464,12 @@ elif page == "🤖 AI Detection":
                     result = subprocess.run(
                         [
                             sys.executable,
-                            str(
-                                SMART_DETECTOR_PATH
-                            )
+                            str(SMART_DETECTOR_PATH)
                         ],
                         capture_output=True,
                         text=True,
-                        cwd=str(
-                            BASE_DIR
-                        )
+                        cwd=str(BASE_DIR)
                     )
-
 
                     if result.returncode == 0:
 
@@ -490,9 +477,10 @@ elif page == "🤖 AI Detection":
                             "Smart AI Analysis Completed Successfully!"
                         )
 
-                        st.code(
-                            result.stdout
-                        )
+                        if result.stdout:
+                            st.code(result.stdout)
+
+                        st.rerun()
 
                     else:
 
@@ -500,9 +488,7 @@ elif page == "🤖 AI Detection":
                             "AI Analysis Failed"
                         )
 
-                        st.code(
-                            result.stderr
-                        )
+                        st.code(result.stderr)
 
                 except Exception as e:
 
@@ -510,12 +496,9 @@ elif page == "🤖 AI Detection":
                         f"Error: {e}"
                     )
 
-
     st.divider()
 
-
     df = load_detection_data()
-
 
     if not df.empty:
 
@@ -526,6 +509,11 @@ elif page == "🤖 AI Detection":
         st.dataframe(
             df,
             use_container_width=True
+        )
+
+        st.metric(
+            "Total Detection Records",
+            len(df)
         )
 
     else:
@@ -546,15 +534,12 @@ elif page == "🚨 Incident Analysis":
         unsafe_allow_html=True
     )
 
-
     st.write(
         """
-        Multiple pothole detections occurring
-        across nearby frames are grouped
-        as a single road incident.
+        Multiple detections occurring across nearby frames
+        can be grouped into a single road incident.
         """
     )
-
 
     if st.button(
         "🚨 Generate Incidents"
@@ -577,17 +562,12 @@ elif page == "🚨 Incident Analysis":
                     result = subprocess.run(
                         [
                             sys.executable,
-                            str(
-                                INCIDENT_GENERATOR_PATH
-                            )
+                            str(INCIDENT_GENERATOR_PATH)
                         ],
                         capture_output=True,
                         text=True,
-                        cwd=str(
-                            BASE_DIR
-                        )
+                        cwd=str(BASE_DIR)
                     )
-
 
                     if result.returncode == 0:
 
@@ -595,9 +575,8 @@ elif page == "🚨 Incident Analysis":
                             "Incident Analysis Completed!"
                         )
 
-                        st.code(
-                            result.stdout
-                        )
+                        if result.stdout:
+                            st.code(result.stdout)
 
                     else:
 
@@ -605,9 +584,7 @@ elif page == "🚨 Incident Analysis":
                             "Incident Generation Failed"
                         )
 
-                        st.code(
-                            result.stderr
-                        )
+                        st.code(result.stderr)
 
                 except Exception as e:
 
@@ -615,29 +592,24 @@ elif page == "🚨 Incident Analysis":
                         f"Error: {e}"
                     )
 
-
     st.divider()
-
 
     st.subheader(
         "Incident Analysis Explanation"
     )
 
-
     st.write(
         """
         Example:
 
-        Frame 1 → Pothole Detected
+        Frame 1 → Pothole detected
 
-        Frame 2 → Same Road Area
+        Frame 2 → Same road area
 
-        Frame 3 → Same Pothole
+        Frame 3 → Same pothole
 
-        Instead of counting these as
-        three separate potholes,
-        the system can group them
-        into one incident.
+        Instead of counting all three as separate potholes,
+        the system can group them as one road incident.
         """
     )
 
@@ -653,59 +625,74 @@ elif page == "📸 Evidence":
         unsafe_allow_html=True
     )
 
+    # ALL UNIQUE EVIDENCE
+    images = get_all_evidence_images()
 
-    evidence_folders = []
-
-    if EVIDENCE_DIR.exists():
-
-        evidence_folders = [
-            folder
-            for folder in EVIDENCE_DIR.iterdir()
-            if folder.is_dir()
-        ]
-
-
-    images = list(
-        EVIDENCE_DIR.glob(
-            "*.jpg"
-        )
+    smart_folder = (
+        EVIDENCE_DIR / "smart_detections"
     )
 
+    all_folder = (
+        EVIDENCE_DIR / "all_detections"
+    )
 
-    for folder in evidence_folders:
+    smart_count = len(
+        get_images_from_folder(smart_folder)
+    )
 
-        images.extend(
-            folder.glob(
-                "*.jpg"
-            )
+    all_count = len(
+        get_images_from_folder(all_folder)
+    )
+
+    # EVIDENCE STATISTICS
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+
+        st.metric(
+            "🤖 Smart Evidence",
+            smart_count
         )
 
+    with col2:
 
-    if len(images) == 0:
+        st.metric(
+            "🕳️ All Detection Evidence",
+            all_count
+        )
+
+    with col3:
+
+        st.metric(
+            "📸 Unique Evidence Displayed",
+            len(images)
+        )
+
+    st.divider()
+
+    if not images:
 
         st.info(
-            "No evidence images available yet."
+            "No evidence images available yet. "
+            "Run AI Detection first."
         )
 
     else:
 
         st.success(
-            f"{len(images)} evidence images found."
+            f"{len(images)} AI detection evidence images found."
         )
 
-
-        columns = st.columns(
-            3
+        st.caption(
+            "All available detection evidence is displayed below. "
+            "Duplicate filenames are shown only once."
         )
 
+        columns = st.columns(3)
 
-        for index, image_path in enumerate(
-            images
-        ):
+        for index, image_path in enumerate(images):
 
-            with columns[
-                index % 3
-            ]:
+            with columns[index % 3]:
 
                 st.image(
                     str(image_path),
@@ -725,9 +712,7 @@ elif page == "📊 Reports":
         unsafe_allow_html=True
     )
 
-
     df = load_detection_data()
-
 
     if df.empty:
 
@@ -741,19 +726,15 @@ elif page == "📊 Reports":
             "Smart Detection CSV Report"
         )
 
-
         st.dataframe(
             df,
             use_container_width=True
         )
 
-
-        csv_data = df.to_csv(
-            index=False
-        ).encode(
-            "utf-8"
+        csv_data = (
+            df.to_csv(index=False)
+            .encode("utf-8")
         )
-
 
         st.download_button(
             label="⬇️ Download Detection Report",
@@ -762,19 +743,29 @@ elif page == "📊 Reports":
             mime="text/csv"
         )
 
-
         st.divider()
-
 
         st.subheader(
             "Detection Statistics"
         )
 
+        col1, col2 = st.columns(2)
 
-        st.metric(
-            "Total Records",
-            len(df)
-        )
+        with col1:
+
+            st.metric(
+                "Total Records",
+                len(df)
+            )
+
+        with col2:
+
+            st.metric(
+                "Total Evidence Images",
+                len(
+                    get_all_evidence_images()
+                )
+            )
 
 
 # =========================================================
@@ -783,17 +774,12 @@ elif page == "📊 Reports":
 
 st.divider()
 
-
 st.markdown(
     """
     <center>
-
-    <b>SIH26124 – AI-Powered Urban Intelligence Platform</b>
-
-    <br>
-
-    Prototype developed for Smart India Hackathon
-
+        <b>SIH26124 – AI-Powered Urban Intelligence Platform</b>
+        <br>
+        Prototype developed for Smart India Hackathon
     </center>
     """,
     unsafe_allow_html=True
