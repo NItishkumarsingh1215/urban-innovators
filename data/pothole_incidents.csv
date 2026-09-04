@@ -1,0 +1,4 @@
+incident_id,status,first_frame,last_frame,frames_detected,best_confidence,best_frame,evidence_image
+POTHOLE_001,POTHOLE_DETECTED,1,1,1,73.58,frame_0001.jpg,evidence/smart_detections\smart_frame_0001.jpg
+POTHOLE_002,POTHOLE_DETECTED,5,5,1,55.82,frame_0005.jpg,evidence/smart_detections\smart_frame_0005.jpg
+POTHOLE_003,POTHOLE_DETECTED,16,23,6,77.49,frame_0017.jpg,evidence/smart_detections\smart_frame_0017.jpg
