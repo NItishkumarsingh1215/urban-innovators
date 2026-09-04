@@ -1,20 +1,30 @@
-﻿__pycache__/
+﻿# Python cache files
+__pycache__/
 *.pyc
 *.pyo
 *.pyd
 
+# Virtual environments
 .venv/
 venv/
 env/
 
+# VS Code settings
 .vscode/
 
-*.pt
-*.pth
-
-data/*.csv
-evidence/
-outputs/
-
+# Operating system files
 .DS_Store
 Thumbs.db
+
+# Generated temporary/output files
+outputs/
+
+# Python test cache
+.pytest_cache/
+
+# Environment files
+.env
+
+# NOTE:
+# AI model file pothole_model.pt ko ignore NAHI karna hai.
+# Isliye *.pt ya *.pth yahan nahi likha gaya hai.
