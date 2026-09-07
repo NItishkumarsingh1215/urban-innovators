@@ -1,3 +1,3 @@
-incident_id,incident_type,status,severity,latitude,longitude,location_source,location_label,first_frame,last_frame,frames_grouped,raw_detections,best_confidence,best_frame,evidence_image
-POTHOLE_001,POTHOLE,POTHOLE_INCIDENT,MEDIUM,28.6109,77.206,DEMO_SIMULATED,Demo Location,0,6,6,11,73.58,frame_0001.jpg,evidence/smart_detections\pothole_0002_frame_0001.jpg
-POTHOLE_002,POTHOLE,POTHOLE_INCIDENT,MEDIUM,28.6124,77.206,DEMO_SIMULATED,Demo Location,15,23,7,19,77.49,frame_0017.jpg,evidence/smart_detections\pothole_0018_frame_0017.jpg
+incident_id,incident_type,status,severity,latitude,longitude,location_source,location_label,first_frame,last_frame,frames_grouped,raw_detections,best_confidence,best_frame,evidence_image,Latitude,Longitude,Location_Source,Location
+POTHOLE_001,POTHOLE,POTHOLE_INCIDENT,MEDIUM,28.6109,77.206,DEMO_SIMULATED,Demo Location,0,6,6,11,73.58,frame_0001.jpg,evidence/smart_detections\pothole_0002_frame_0001.jpg,26.7386,83.3636,VIDEO_GPS_METADATA,"Gorakhpur, Uttar Pradesh"
+POTHOLE_002,POTHOLE,POTHOLE_INCIDENT,MEDIUM,28.6124,77.206,DEMO_SIMULATED,Demo Location,15,23,7,19,77.49,frame_0017.jpg,evidence/smart_detections\pothole_0018_frame_0017.jpg,26.7386,83.3636,VIDEO_GPS_METADATA,"Gorakhpur, Uttar Pradesh"

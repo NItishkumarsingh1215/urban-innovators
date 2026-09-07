@@ -2,522 +2,116 @@ import os
 import cv2
 import pandas as pd
 from pathlib import Path
+from datetime import datetime
 from ultralytics import YOLO
-
 
 # =========================================================
 # PROJECT PATHS
 # =========================================================
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 UPLOAD_DIR = BASE_DIR / "uploads" / "road_videos"
 DATA_DIR = BASE_DIR / "data"
+EVIDENCE_DIR = BASE_DIR / "evidence" / "traffic_detections"
+OUTPUT_DIR = BASE_DIR / "output"
 
-EVIDENCE_DIR = (
-    BASE_DIR
-    / "evidence"
-    / "traffic_detections"
-)
+for folder in [DATA_DIR, EVIDENCE_DIR, OUTPUT_DIR]:
+    folder.mkdir(parents=True, exist_ok=True)
 
-DATA_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
-
-EVIDENCE_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
-
-
-# =========================================================
-# FIND VIDEO
-# =========================================================
-
-VIDEO_EXTENSIONS = [
-    ".mp4",
-    ".avi",
-    ".mov"
-]
-
-
-video_files = [
-    file
-    for file in UPLOAD_DIR.iterdir()
-    if file.suffix.lower()
-    in VIDEO_EXTENSIONS
-]
-
+VIDEO_EXTENSIONS = [".mp4", ".avi", ".mov"]
+video_files = [f for f in UPLOAD_DIR.iterdir() if f.suffix.lower() in VIDEO_EXTENSIONS]
 
 if len(video_files) == 0:
-
-    print(
-        "ERROR: No road video found!"
-    )
-
+    print("ERROR: No road video found in uploads/road_videos!")
     raise SystemExit
-
 
 VIDEO_PATH = video_files[0]
+print("Loading YOLOv8 vehicle detection & tracking model...")
+model = YOLO("yolov8n.pt")
+cap = cv2.VideoCapture(str(VIDEO_PATH))
 
+width, height, fps = int(cap.get(3)), int(cap.get(4)), int(cap.get(5))
+out = cv2.VideoWriter(str(OUTPUT_DIR / f"processed_{VIDEO_PATH.name}"), cv2.VideoWriter_fourcc(*'mp4v'), fps, (width, height))
 
-# =========================================================
-# LOAD YOLO MODEL
-# =========================================================
-
-print(
-    "Loading YOLOv8 vehicle detection model..."
-)
-
-
-model = YOLO(
-    "yolov8n.pt"
-)
-
-
-# =========================================================
-# OPEN VIDEO
-# =========================================================
-
-cap = cv2.VideoCapture(
-    str(VIDEO_PATH)
-)
-
-
-if not cap.isOpened():
-
-    print(
-        "ERROR: Unable to open video!"
-    )
-
-    raise SystemExit
-
-
-total_frames = int(
-    cap.get(
-        cv2.CAP_PROP_FRAME_COUNT
-    )
-)
-
-
-fps = cap.get(
-    cv2.CAP_PROP_FPS
-)
-
-
-print(
-    f"Video: {VIDEO_PATH.name}"
-)
-
-
-print(
-    f"Total Frames: {total_frames}"
-)
-
-
-print(
-    f"FPS: {fps}"
-)
-
-
-# =========================================================
-# VEHICLE CLASSES
-# =========================================================
-
-VEHICLE_CLASSES = {
-    2: "Car",
-    3: "Bike",
-    5: "Bus",
-    7: "Truck"
-}
-
-
-# =========================================================
-# RESULTS
-# =========================================================
-
+VEHICLE_CLASSES = {2: "Car", 3: "Bike", 5: "Bus", 7: "Truck"}
 results_data = []
-
-
-# =========================================================
-# DUPLICATE PREVENTION
-# =========================================================
-
+unique_vehicle_ids = set()
+total_cars = total_bikes = total_buses = total_trucks = 0
 last_saved_gray = None
+emergency_mode = False
 
+def is_duplicate_frame(frame, previous_frame):
+    if previous_frame is None: return False
+    gray = cv2.resize(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), (64, 64))
+    return cv2.absdiff(gray, previous_frame).mean() < 8
 
-def is_duplicate_frame(
-    frame,
-    previous_frame
-):
-
-    if previous_frame is None:
-
-        return False
-
-
-    gray = cv2.cvtColor(
-        frame,
-        cv2.COLOR_BGR2GRAY
-    )
-
-
-    gray = cv2.resize(
-        gray,
-        (64, 64)
-    )
-
-
-    difference = cv2.absdiff(
-        gray,
-        previous_frame
-    )
-
-
-    score = difference.mean()
-
-
-    # Lower difference means
-    # scene is almost same
-    if score < 8:
-
-        return True
-
-
-    return False
-
-
-# =========================================================
-# PROCESS VIDEO
-# =========================================================
-
-frame_number = 0
-
+print("Processing video... (Press 'e' for Emergency Override, 'q' to stop).")
 
 while True:
-
     success, frame = cap.read()
+    if not success: break
 
-
-    if not success:
-
-        break
-
-
-    frame_number += 1
-
-
-    # Process every 30th frame
-    if frame_number % 30 != 0:
-
-        continue
-
-
-    # =====================================================
-    # YOLO DETECTION
-    # =====================================================
-
-    detections = model(
-        frame,
-        verbose=False,
-        conf=0.35
-    )
-
-
-    car_count = 0
-
-    bike_count = 0
-
-    bus_count = 0
-
-    truck_count = 0
-
-    total_vehicles = 0
-
-
+    frame_number = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
     annotated_frame = frame.copy()
-
-
-    for result in detections:
-
-        boxes = result.boxes
-
-
-        if boxes is None:
-
-            continue
-
-
-        for box in boxes:
-
-            class_id = int(
-                box.cls[0]
-            )
-
-
-            confidence = float(
-                box.conf[0]
-            )
-
-
-            if class_id not in VEHICLE_CLASSES:
-
-                continue
-
-
-            vehicle_name = (
-                VEHICLE_CLASSES[class_id]
-            )
-
-
-            total_vehicles += 1
-
-
-            if vehicle_name == "Car":
-
-                car_count += 1
-
-
-            elif vehicle_name == "Bike":
-
-                bike_count += 1
-
-
-            elif vehicle_name == "Bus":
-
-                bus_count += 1
-
-
-            elif vehicle_name == "Truck":
-
-                truck_count += 1
-
-
-            x1, y1, x2, y2 = map(
-                int,
-                box.xyxy[0]
-            )
-
-
-            label = (
-                f"{vehicle_name} "
-                f"{confidence:.2f}"
-            )
-
-
-            cv2.rectangle(
-                annotated_frame,
-                (x1, y1),
-                (x2, y2),
-                (0, 255, 0),
-                2
-            )
-
-
-            cv2.putText(
-                annotated_frame,
-                label,
-                (x1, max(y1 - 10, 20)),
-                cv2.FONT_HERSHEY_SIMPLEX,
-                0.6,
-                (0, 255, 0),
-                2
-            )
-
-
-    # =====================================================
-    # TRAFFIC LEVEL
-    # =====================================================
-
-    if total_vehicles >= 8:
-
-        traffic_level = "High"
-
-
-    elif total_vehicles >= 4:
-
-        traffic_level = "Medium"
-
-
-    else:
-
-        traffic_level = "Low"
-
-
-    # =====================================================
-    # ADD INFORMATION ON IMAGE
-    # =====================================================
-
-    info_text = (
-        f"Vehicles: {total_vehicles} | "
-        f"Cars: {car_count} | "
-        f"Bikes: {bike_count} | "
-        f"Buses: {bus_count} | "
-        f"Trucks: {truck_count}"
-    )
-
-
-    traffic_text = (
-        f"Traffic Level: {traffic_level}"
-    )
-
-
-    cv2.rectangle(
-        annotated_frame,
-        (0, 0),
-        (
-            annotated_frame.shape[1],
-            75
-        ),
-        (0, 0, 0),
-        -1
-    )
-
-
-    cv2.putText(
-        annotated_frame,
-        info_text,
-        (15, 30),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.65,
-        (255, 255, 255),
-        2
-    )
-
-
-    cv2.putText(
-        annotated_frame,
-        traffic_text,
-        (15, 60),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        0.65,
-        (0, 255, 255),
-        2
-    )
-
-
-    # =====================================================
-    # SAVE UNIQUE TRAFFIC EVIDENCE
-    # =====================================================
-
-    if total_vehicles > 0:
-
-        gray_small = cv2.cvtColor(
-            frame,
-            cv2.COLOR_BGR2GRAY
-        )
-
-
-        gray_small = cv2.resize(
-            gray_small,
-            (64, 64)
-        )
-
-
-        duplicate = is_duplicate_frame(
-            frame,
-            last_saved_gray
-        )
-
-
-        if not duplicate:
-
-            evidence_path = (
-                EVIDENCE_DIR
-                / (
-                    f"traffic_frame_"
-                    f"{frame_number:04d}.jpg"
-                )
-            )
-
-
-            cv2.imwrite(
-                str(evidence_path),
-                annotated_frame
-            )
-
-
-            last_saved_gray = (
-                gray_small
-            )
-
-
-    # =====================================================
-    # SAVE CSV DATA
-    # =====================================================
-
-    results_data.append(
-        {
-            "Frame": frame_number,
-            "Cars": car_count,
-            "Bikes": bike_count,
-            "Buses": bus_count,
-            "Trucks": truck_count,
-            "Total_Vehicles": total_vehicles,
-            "Traffic_Level": traffic_level
-        }
-    )
-
-
-    print(
-        f"Frame {frame_number} | "
-        f"Vehicles: {total_vehicles} | "
-        f"Cars: {car_count} | "
-        f"Bikes: {bike_count} | "
-        f"Buses: {bus_count} | "
-        f"Trucks: {truck_count} | "
-        f"Traffic: {traffic_level}"
-    )
-
-
-# =========================================================
-# RELEASE VIDEO
-# =========================================================
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    results = model.track(frame, persist=True, verbose=False, conf=0.35, classes=[2, 3, 5, 7])
+    current_frame_vehicles = 0 
+
+    if results[0].boxes is not None and results[0].boxes.id is not None:
+        boxes = results[0].boxes.xyxy.cpu().numpy().astype(int)
+        class_ids = results[0].boxes.cls.cpu().numpy().astype(int)
+        track_ids = results[0].boxes.id.cpu().numpy().astype(int)
+        
+        for box, class_id, track_id in zip(boxes, class_ids, track_ids):
+            current_frame_vehicles += 1
+            vehicle_name = VEHICLE_CLASSES[class_id]
+
+            if track_id not in unique_vehicle_ids:
+                unique_vehicle_ids.add(track_id)
+                if vehicle_name == "Car": total_cars += 1
+                elif vehicle_name == "Bike": total_bikes += 1
+                elif vehicle_name == "Bus": total_buses += 1
+                elif vehicle_name == "Truck": total_trucks += 1
+
+            x1, y1, x2, y2 = box
+            cv2.rectangle(annotated_frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.putText(annotated_frame, f"{vehicle_name} ID:{track_id}", (x1, max(y1 - 10, 20)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+
+    if current_frame_vehicles >= 8: traffic_level, level_color = "High", (0, 0, 255)
+    elif current_frame_vehicles >= 4: traffic_level, level_color = "Medium", (0, 165, 255)
+    else: traffic_level, level_color = "Low", (0, 255, 0)
+
+    cv2.rectangle(annotated_frame, (0, 0), (annotated_frame.shape[1], 100 if emergency_mode else 80), (0, 0, 0), -1)
+    cv2.putText(annotated_frame, f"Time: {current_time}", (15, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+    cv2.putText(annotated_frame, f"Unique -> Cars: {total_cars} | Bikes: {total_bikes} | Buses: {total_buses} | Trucks: {total_trucks}", (15, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+    cv2.putText(annotated_frame, f"Traffic: {traffic_level} ({current_frame_vehicles} in frame)", (15, 75), cv2.FONT_HERSHEY_SIMPLEX, 0.6, level_color, 2)
+    if emergency_mode: cv2.putText(annotated_frame, "🚨 EMERGENCY OVERRIDE ACTIVE 🚨", (15, 95), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 255), 2)
+
+    # 👉 YEH LINE WEB DASHBOARD KO LIVE RAKHEGI
+    cv2.imwrite(str(DATA_DIR / "live_frame.jpg"), annotated_frame)
+
+    if frame_number % 30 == 0 and current_frame_vehicles > 0:
+        gray_small = cv2.resize(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), (64, 64))
+        if not is_duplicate_frame(frame, last_saved_gray):
+            cv2.imwrite(str(EVIDENCE_DIR / f"traffic_evidence_{frame_number:04d}.jpg"), annotated_frame)
+            last_saved_gray = gray_small
+
+        results_data.append({
+            "Frame": frame_number, "Timestamp": current_time, 
+            "Live_Vehicles_in_Frame": current_frame_vehicles,
+            "Traffic_Level": traffic_level, "Emergency": emergency_mode
+        })
+        pd.DataFrame(results_data).to_csv(DATA_DIR / "traffic_results.csv", index=False)
+
+    out.write(annotated_frame)
+    try: cv2.imshow("Live AI Camera", annotated_frame)
+    except: pass
+
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord('q'): break
+    elif key == ord('e'): emergency_mode = not emergency_mode
 
 cap.release()
-
-
-# =========================================================
-# SAVE CSV
-# =========================================================
-
-df = pd.DataFrame(
-    results_data
-)
-
-
-csv_path = (
-    DATA_DIR
-    / "traffic_results.csv"
-)
-
-
-df.to_csv(
-    csv_path,
-    index=False
-)
-
-
-print()
-
-
-print(
-    "Traffic analysis completed!"
-)
-
-
-print(
-    f"CSV saved: {csv_path}"
-)
-
-
-print(
-    f"Traffic evidence folder: {EVIDENCE_DIR}"
-)
-
-
-print(
-    f"Total unique traffic evidence: "
-    f"{len(list(EVIDENCE_DIR.glob('*.jpg')))}"
-)
+out.release()
+cv2.destroyAllWindows()
