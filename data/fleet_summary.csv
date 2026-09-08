@@ -1,5 +1,5 @@
 Bus_ID,Route,Driver,Status,Issues_Detected,Last_Sync_Time,Fleet_Health
-BUS-DL01-101,Route 12 (Connaught Place - AIIMS),Rajesh Kumar,Active,2,2026-09-07 16:02:14,Optimal
-BUS-DL01-102,Route 45 (ISBT - Dwarka),Amit Sharma,Active,5,2026-09-07 16:02:14,Optimal
-BUS-DL01-103,Route 22 (Karol Bagh - Nehru Place),Suresh Singh,Active,8,2026-09-07 16:02:14,Needs Attention
-BUS-DL01-104,Route 89 (Lajpat Nagar - Rohini),Vikram Malhotra,Active,11,2026-09-07 16:02:14,Needs Attention
+BUS-DL01-101,Route 12 (Connaught Place - AIIMS),Rajesh Kumar,Active,2,2026-09-07 21:54:46,Optimal
+BUS-DL01-102,Route 45 (ISBT - Dwarka),Amit Sharma,Active,5,2026-09-07 21:54:46,Optimal
+BUS-DL01-103,Route 22 (Karol Bagh - Nehru Place),Suresh Singh,Active,8,2026-09-07 21:54:46,Needs Attention
+BUS-DL01-104,Route 89 (Lajpat Nagar - Rohini),Vikram Malhotra,Active,11,2026-09-07 21:54:46,Needs Attention
