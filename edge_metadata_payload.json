@@ -1,0 +1,227 @@
+[
+    {
+        "frame_id": 30,
+        "timestamp": "2026-09-08 12:00:30",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 9,
+        "evidence_image": "evidence/edge_snapshots/frame_0030.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 60,
+        "timestamp": "2026-09-08 12:00:00",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 8,
+        "evidence_image": "evidence/edge_snapshots/frame_0060.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 90,
+        "timestamp": "2026-09-08 12:00:30",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 11,
+        "evidence_image": "evidence/edge_snapshots/frame_0090.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 120,
+        "timestamp": "2026-09-08 12:00:00",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 3,
+        "evidence_image": "evidence/edge_snapshots/frame_0120.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 150,
+        "timestamp": "2026-09-08 12:00:30",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 7,
+        "evidence_image": "evidence/edge_snapshots/frame_0150.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 180,
+        "timestamp": "2026-09-08 12:00:00",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 7,
+        "evidence_image": "evidence/edge_snapshots/frame_0180.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 210,
+        "timestamp": "2026-09-08 12:00:30",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 13,
+        "evidence_image": "evidence/edge_snapshots/frame_0210.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 240,
+        "timestamp": "2026-09-08 12:00:00",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 9,
+        "evidence_image": "evidence/edge_snapshots/frame_0240.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 270,
+        "timestamp": "2026-09-08 12:00:30",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 12,
+        "evidence_image": "evidence/edge_snapshots/frame_0270.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 300,
+        "timestamp": "2026-09-08 12:00:00",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 18,
+        "evidence_image": "evidence/edge_snapshots/frame_0300.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 330,
+        "timestamp": "2026-09-08 12:00:30",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 8,
+        "evidence_image": "evidence/edge_snapshots/frame_0330.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 360,
+        "timestamp": "2026-09-08 12:00:00",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 13,
+        "evidence_image": "evidence/edge_snapshots/frame_0360.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 390,
+        "timestamp": "2026-09-08 12:00:30",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 12,
+        "evidence_image": "evidence/edge_snapshots/frame_0390.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 420,
+        "timestamp": "2026-09-08 12:00:00",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 5,
+        "evidence_image": "evidence/edge_snapshots/frame_0420.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 450,
+        "timestamp": "2026-09-08 12:00:30",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 9,
+        "evidence_image": "evidence/edge_snapshots/frame_0450.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 480,
+        "timestamp": "2026-09-08 12:00:00",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 7,
+        "evidence_image": "evidence/edge_snapshots/frame_0480.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 510,
+        "timestamp": "2026-09-08 12:00:30",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 13,
+        "evidence_image": "evidence/edge_snapshots/frame_0510.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 540,
+        "timestamp": "2026-09-08 12:00:00",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 13,
+        "evidence_image": "evidence/edge_snapshots/frame_0540.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 570,
+        "timestamp": "2026-09-08 12:00:30",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 12,
+        "evidence_image": "evidence/edge_snapshots/frame_0570.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 600,
+        "timestamp": "2026-09-08 12:00:00",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 13,
+        "evidence_image": "evidence/edge_snapshots/frame_0600.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 630,
+        "timestamp": "2026-09-08 12:00:30",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 8,
+        "evidence_image": "evidence/edge_snapshots/frame_0630.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 660,
+        "timestamp": "2026-09-08 12:00:00",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 6,
+        "evidence_image": "evidence/edge_snapshots/frame_0660.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 690,
+        "timestamp": "2026-09-08 12:00:30",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 6,
+        "evidence_image": "evidence/edge_snapshots/frame_0690.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 720,
+        "timestamp": "2026-09-08 12:00:00",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 8,
+        "evidence_image": "evidence/edge_snapshots/frame_0720.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    },
+    {
+        "frame_id": 750,
+        "timestamp": "2026-09-08 12:00:30",
+        "latitude": 26.7386,
+        "longitude": 83.3636,
+        "total_detections": 5,
+        "evidence_image": "evidence/edge_snapshots/frame_0750.jpg",
+        "status": "FLAGGED_FOR_CLOUD"
+    }
+]

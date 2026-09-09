@@ -1,30 +1,26 @@
-﻿# Python cache files
+﻿# Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Virtual environments
-.venv/
+# Virtual environment
 venv/
+.venv/
 env/
 
-# VS Code settings
-.vscode/
-
-# Operating system files
-.DS_Store
-Thumbs.db
-
-# Generated temporary/output files
-outputs/
-
-# Python test cache
-.pytest_cache/
-
-# Environment files
+# Environment / secrets
 .env
 
-# NOTE:
-# AI model file pothole_model.pt ko ignore NAHI karna hai.
-# Isliye *.pt ya *.pth yahan nahi likha gaya hai.
+# Generated output
+output/*.mp4
+
+# Generated live frame
+data/live_frame.jpg
+
+# Generated evidence
+evidence/traffic_detections/
+evidence/edge_snapshots/
+
+# Python cache
+.pytest_cache/
