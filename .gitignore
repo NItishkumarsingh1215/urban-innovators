@@ -12,8 +12,13 @@ env/
 # Environment / secrets
 .env
 
-# Generated output
-output/*.mp4
+# Videos
+uploads/**/*.mp4
+output/**/*.mp4
+
+# AI model files
+models/*.pt
+ai_engine/*.pt
 
 # Generated live frame
 data/live_frame.jpg
@@ -21,6 +26,10 @@ data/live_frame.jpg
 # Generated evidence
 evidence/traffic_detections/
 evidence/edge_snapshots/
+evidence/anpr_detections/
+evidence/all_detections/
+evidence/smart_detections/
 
-# Python cache
-.pytest_cache/
+# Temporary / generated files
+*.tmp
+*.log
