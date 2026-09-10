@@ -1,5 +1,5 @@
-streamlit
-opencv-python-headless
+streamlit==1.63.0
+opencv-python-headless==5.0.0.93
 pandas
 numpy
 ultralytics
