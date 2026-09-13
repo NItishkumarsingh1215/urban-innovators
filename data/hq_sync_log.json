@@ -1,0 +1,11 @@
+{
+    "last_sync_timestamp": "2026-09-13 23:47:57",
+    "sync_status": "ONLINE_DEPOT_SYNCED",
+    "hq_endpoint": "https://hq-transit.smartcity.bel.in/api/v1/telemetry",
+    "depot_wifi_ssid": "BEL-DEPOT-FLEET-5G",
+    "buffered_incidents_count": 478,
+    "sync_interval_min": 15,
+    "offline_buffer_fallback": "ACTIVE (Zero Data Loss Guaranteed)",
+    "cellular_bandwidth_saved": "99.7%",
+    "ignition_trigger_state": "IGNITION_ON_AUTO_RECORDING"
+}

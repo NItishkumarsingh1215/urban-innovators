@@ -53,7 +53,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-html, body, [class*="css"] { font-family: 'Inter', sans-serif; color: #f8fafc; }
+html, body, [class*="css"], [class*="st-"], .stMarkdown, p, span, label { font-family: 'Inter', sans-serif; color: #f8fafc; }
 .stApp { background: radial-gradient(circle at 10% 20%, #0d1527 0%, #070a13 90%); }
 
 .executive-header {
@@ -155,6 +155,111 @@ html, body, [class*="css"] { font-family: 'Inter', sans-serif; color: #f8fafc; }
     transform: translateY(-2px) !important;
     box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.5) !important;
     border-color: #60a5fa !important;
+}
+
+/* HIGH-CONTRAST EXPANDER & ACCORDION STYLING */
+[data-testid="stExpander"] {
+    background: rgba(15, 23, 42, 0.75) !important;
+    border: 1px solid rgba(56, 189, 248, 0.22) !important;
+    border-radius: 12px !important;
+    margin-bottom: 12px !important;
+    box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4) !important;
+    transition: all 0.2s ease !important;
+    overflow: hidden !important;
+}
+[data-testid="stExpander"]:hover {
+    border-color: rgba(56, 189, 248, 0.55) !important;
+    box-shadow: 0 6px 20px -2px rgba(56, 189, 248, 0.18) !important;
+}
+[data-testid="stExpander"] details {
+    border-radius: 12px !important;
+    background: transparent !important;
+}
+[data-testid="stExpander"] summary {
+    background: rgba(30, 41, 59, 0.65) !important;
+    padding: 12px 18px !important;
+    border-radius: 12px !important;
+    transition: background 0.2s ease !important;
+}
+[data-testid="stExpander"] summary:hover {
+    background: rgba(56, 189, 248, 0.14) !important;
+}
+[data-testid="stExpander"] summary p,
+[data-testid="stExpander"] summary span,
+[data-testid="stExpander"] summary div {
+    color: #f8fafc !important;
+    font-size: 1.02rem !important;
+    font-weight: 700 !important;
+}
+[data-testid="stExpander"] summary svg,
+[data-testid="stExpander"] svg {
+    color: #38bdf8 !important;
+    fill: #38bdf8 !important;
+    transform: scale(1.15) !important;
+}
+[data-testid="stExpanderDetails"] {
+    background: rgba(11, 19, 36, 0.9) !important;
+    padding: 16px 20px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.07) !important;
+    border-radius: 0 0 12px 12px !important;
+}
+
+/* DATA REGISTRY CARD & BADGES */
+.register-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(56, 189, 248, 0.25);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.4);
+}
+.count-chip {
+    background: rgba(6, 182, 212, 0.18);
+    border: 1px solid rgba(56, 189, 248, 0.4);
+    color: #38bdf8;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 3px 10px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* STYLED DOWNLOAD BUTTONS */
+[data-testid="stDownloadButton"] > button {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(56, 189, 248, 0.45) !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    padding: 8px 16px !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important;
+    transition: all 0.2s ease !important;
+}
+[data-testid="stDownloadButton"] > button:hover {
+    background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important;
+    border-color: #38bdf8 !important;
+    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* DATAFRAME & TABLE STYLING */
+[data-testid="stDataFrame"], [data-testid="stTable"] {
+    border: 1px solid rgba(56, 189, 248, 0.2) !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3) !important;
+}
+
+/* RADIO GROUP CONTAINER */
+[data-testid="stRadio"] > div[role="radiogroup"] {
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 10px !important;
+    padding: 8px 14px !important;
 }
 
 .section-header {
@@ -750,7 +855,7 @@ elif navigation == "📊 Reports & Data Export":
             """, unsafe_allow_html=True)
         except Exception: pass
 
-    col_btn1, col_btn2 = st.columns(2)
+    col_btn1, col_btn2, col_btn3 = st.columns(3)
     with col_btn1:
         if st.button("🔄 Force Push Buffered Logs to Municipal HQ", use_container_width=True):
             st.success("✅ Buffered incidents successfully pushed to Municipal Headquarters Server! (Zero Data Loss Guaranteed)")
@@ -770,29 +875,198 @@ elif navigation == "📊 Reports & Data Export":
             use_container_width=True
         )
 
-    st.markdown("---")
-    st.subheader("📑 Municipal CSV Registers")
-
-    reports = [
-        ("🚨 Central Incidents Register", "incidents.csv"),
-        ("🕳️ Pothole Detections", "smart_detection_results.csv"),
-        ("🚧 Infrastructure Deficiencies", "infrastructure_defects.csv"),
-        ("🚗 Traffic Flow Records", "traffic_results.csv"),
-        ("🌊 Waterlogging Hazards", "waterlogging_results.csv"),
-        ("🚶‍♂️ Pedestrian Safety", "pedestrian_results.csv"),
-        ("🔍 ANPR Violations", "anpr_results.csv"),
-        ("🗑️ Garbage & Sanitation Log", "garbage_results.csv"),
-        ("⚠️ Signal Fault Register", "signal_faults.csv"),
-        ("🚌 Fleet Summary", "fleet_summary.csv"),
-        ("📈 Route Delays", "od_delay_results.csv")
+    # Master list of 11 municipal registers with metadata & descriptions
+    reports_meta = [
+        {
+            "id": "incidents",
+            "title": "🚨 Central Incidents Register",
+            "file": "incidents.csv",
+            "desc": "Centralized municipal event dispatch log aggregating all road defects, high-risk safety hazards, and traffic violations with geo-coordinates."
+        },
+        {
+            "id": "potholes",
+            "title": "🕳️ Pothole Detections",
+            "file": "smart_detection_results.csv",
+            "desc": "AI edge pothole detections with frame numbers, confidence scores, estimated crater depth, and GPS coordinates."
+        },
+        {
+            "id": "infrastructure",
+            "title": "🚧 Infrastructure Deficiencies",
+            "file": "infrastructure_defects.csv",
+            "desc": "Road furniture defects including missing guardrails, broken manholes, obscured signage, and pavement cracks."
+        },
+        {
+            "id": "traffic",
+            "title": "🚗 Traffic Flow Records",
+            "file": "traffic_results.csv",
+            "desc": "Real-time corridor traffic density monitoring, vehicle counts (cars, buses, trucks, bikes), and congestion indexes."
+        },
+        {
+            "id": "waterlogging",
+            "title": "🌊 Waterlogging Hazards",
+            "file": "waterlogging_results.csv",
+            "desc": "Surface water pooling and flood hazard sensing with glint reflection scores and flood risk classifications."
+        },
+        {
+            "id": "pedestrian",
+            "title": "🚶‍♂️ Pedestrian Safety",
+            "file": "pedestrian_results.csv",
+            "desc": "Pedestrian proximity monitoring, jaywalking alerts, school zone crossings, and vulnerable road user safety logs."
+        },
+        {
+            "id": "anpr",
+            "title": "🔍 ANPR Violations",
+            "file": "anpr_results.csv",
+            "desc": "Automated Number Plate Recognition (ANPR) logs, speed violations, and repeat traffic offender registers."
+        },
+        {
+            "id": "garbage",
+            "title": "🗑️ Garbage & Sanitation Log",
+            "file": "garbage_results.csv",
+            "desc": "Swachh Bharat municipal sanitation audit tracking roadside garbage heaps, overflowing bins, and dump severity."
+        },
+        {
+            "id": "signals",
+            "title": "⚠️ Signal Fault Register",
+            "file": "signal_faults.csv",
+            "desc": "Automated traffic signal diagnostics, power blackout detections, stuck red/green phases, and maintenance tickets."
+        },
+        {
+            "id": "fleet",
+            "title": "🚌 Fleet Summary",
+            "file": "fleet_summary.csv",
+            "desc": "Transit bus fleet status, corridor assignment, onboard edge hardware health, and daily sensing yield."
+        },
+        {
+            "id": "od_delay",
+            "title": "📈 Route Delays",
+            "file": "od_delay_results.csv",
+            "desc": "Origin-to-Destination travel times, scheduled vs actual arrival delays, and transit corridor bottlenecks."
+        }
     ]
-    for title, fname in reports:
-        d = load_csv(fname)
-        with st.expander(f"{title} ({len(d)} records)", expanded=(fname == "incidents.csv")):
-            if not d.empty:
-                st.dataframe(d, use_container_width=True)
-                st.download_button(f"⬇️ Download {title} (CSV)", d.to_csv(index=False).encode("utf-8"), fname, "text/csv", key=f"dl_{fname}")
-            else: st.info("No records logged.")
+
+    # Preload report datasets & calculate aggregate metrics
+    loaded_reports = []
+    total_records = 0
+    for r in reports_meta:
+        df_r = load_csv(r["file"])
+        n_rows = len(df_r)
+        total_records += n_rows
+        loaded_reports.append({**r, "df": df_r, "count": n_rows})
+
+    with col_btn3:
+        # ZIP All CSVs bundle
+        csv_zip_buffer = io.BytesIO()
+        with zipfile.ZipFile(csv_zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+            for rep in loaded_reports:
+                if not rep["df"].empty:
+                    zf.writestr(rep["file"], rep["df"].to_csv(index=False).encode("utf-8"))
+        csv_zip_buffer.seek(0)
+        st.download_button(
+            label="📦 Download All CSV Registers (ZIP)",
+            data=csv_zip_buffer,
+            file_name="BEL_SIH26124_Municipal_CSV_Registers.zip",
+            mime="application/zip",
+            use_container_width=True
+        )
+
+    st.markdown("---")
+
+    # Executive Overview Metric KPI Cards
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("📑 Municipal Registers", f"{len(loaded_reports)} Datasets")
+    m2.metric("📊 Total Logged Records", f"{total_records:,}")
+    m3.metric("🚨 Central Incidents", f"{len(df_incidents)}")
+    m4.metric("🛰️ Edge Buffer Status", "100% Synced")
+
+    st.markdown("<div style='margin-top: 14px;'></div>", unsafe_allow_html=True)
+
+    # View Mode Switcher
+    view_mode = st.radio(
+        "Select Registry Presentation Mode:",
+        ["🗂️ Interactive Register Inspector (Clear Single-View)", "📑 Complete Register Vault (Accordion Cards)"],
+        horizontal=True
+    )
+
+    if "Interactive Register Inspector" in view_mode:
+        options = [f"{r['title']}  •  ({r['count']} records)" for r in loaded_reports]
+        sel_idx = st.selectbox(
+            "Select Register to Inspect & Download:",
+            range(len(loaded_reports)),
+            format_func=lambda i: options[i],
+            index=0
+        )
+        selected_rep = loaded_reports[sel_idx]
+        sel_df = selected_rep["df"]
+
+        st.markdown(f"""
+        <div class="register-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <div>
+                    <div style="font-size:1.35rem; font-weight:800; color:#f8fafc;">{selected_rep['title']}</div>
+                    <div style="color:#94a3b8; font-size:0.88rem; margin-top:4px;">{selected_rep['desc']}</div>
+                    <div style="margin-top:10px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                        <span class="count-chip">📊 {selected_rep['count']} Records</span>
+                        <span class="status-pill status-active">📄 {selected_rep['file']}</span>
+                        <span class="status-pill status-online">✓ Edge Synced</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        col_dl, col_search = st.columns([1, 3])
+        with col_dl:
+            if not sel_df.empty:
+                st.download_button(
+                    label=f"⬇️ Download CSV",
+                    data=sel_df.to_csv(index=False).encode("utf-8"),
+                    file_name=selected_rep["file"],
+                    mime="text/csv",
+                    use_container_width=True,
+                    key=f"dl_single_{selected_rep['file']}"
+                )
+        with col_search:
+            search_query = st.text_input(f"🔍 Filter / Search within {selected_rep['file']}:", placeholder="Type any keyword to filter records instantly...")
+
+        if not sel_df.empty:
+            filtered_df = sel_df
+            if search_query:
+                mask = sel_df.astype(str).apply(lambda row: row.str.contains(search_query, case=False).any(), axis=1)
+                filtered_df = sel_df[mask]
+                st.caption(f"Showing **{len(filtered_df)}** matching records of {len(sel_df)} total")
+
+            st.dataframe(filtered_df, use_container_width=True, height=420)
+        else:
+            st.info(f"No records logged yet for {selected_rep['title']}.")
+
+    else:
+        st.write(f"Displaying all **{len(loaded_reports)}** municipal registers in high-contrast accordion cards:")
+        for rep in loaded_reports:
+            r_title = rep["title"]
+            r_fname = rep["file"]
+            r_count = rep["count"]
+            r_df = rep["df"]
+            
+            with st.expander(f"{r_title}  •  [{r_count} records]", expanded=(r_fname == "incidents.csv")):
+                col_info, col_btn = st.columns([3, 1])
+                with col_info:
+                    st.markdown(f"<div style='color:#94a3b8; font-size:0.85rem; margin-bottom:8px;'><b>Description:</b> {rep['desc']} | <b>File:</b> <code>{r_fname}</code></div>", unsafe_allow_html=True)
+                with col_btn:
+                    if not r_df.empty:
+                        st.download_button(
+                            label=f"⬇️ Export {r_fname}",
+                            data=r_df.to_csv(index=False).encode("utf-8"),
+                            file_name=r_fname,
+                            mime="text/csv",
+                            use_container_width=True,
+                            key=f"dl_exp_{r_fname}"
+                        )
+                
+                if not r_df.empty:
+                    st.dataframe(r_df, use_container_width=True)
+                else:
+                    st.info("No records logged in this register.")
 
 st.divider()
 st.markdown("<center style='color:#64748b; font-size:0.8rem;'><b>SIH 26124 – AI-Powered Mobile Urban Intelligence Platform Using Public Transport Fleet</b><br>Bharat Electronics Limited (BEL) • Ministry of Electronics and Information Technology (MeitY)</center>", unsafe_allow_html=True)

@@ -1,5 +1,4 @@
-Route_ID,Origin,Destination,Standard_Duration_Min,Current_Delay_Min,Congestion_Index,OD_Volume,Analysis_Time
-RT-101,Connaught Place,AIIMS,30,12,High,"1,450 daily trips",2026-09-08 12:30:38
-RT-102,ISBT Kashmiri Gate,Dwarka Sector 21,45,5,Medium,"2,100 daily trips",2026-09-08 12:30:38
-RT-103,Karol Bagh,Nehru Place,40,18,Critical,"1,800 daily trips",2026-09-08 12:30:38
-RT-104,Lajpat Nagar,Rohini Sector 18,50,8,Low,950 daily trips,2026-09-08 12:30:38
+Route_ID,Origin,Destination,Length_KM,Scheduled_Time_Min,Actual_Time_Min,Current_Delay_Min,Congestion_Level,Bottleneck_Intersection
+UP-RT-01,Gorakhpur Railway Station,AIIMS Gorakhpur Transit Stop,9.8,25,33,8.0,Moderate Delay,Mohaddipur Chauraha
+RT-335E,BEL Circle Gate 1,Hebbal Flyover / ORR,8.4,22,31,9.0,Moderate Delay,Kuvempu Circle
+RT-522,Connaught Place,AIIMS Ansari Nagar,9.2,28,41,13.0,Heavy Delay,India Gate C-Hexagon

@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 __pycache__/
 *.pyc
 *.pyo
@@ -13,6 +13,7 @@ env/
 .env
 
 # Videos
+*.mp4
 uploads/**/*.mp4
 output/**/*.mp4
 
