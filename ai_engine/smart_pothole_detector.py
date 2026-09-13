@@ -55,12 +55,31 @@ def clear_old_outputs():
                 pass
 
 
-def save_csv(rows):
+def save_csv(rows, corridor_key="bengaluru_bel"):
+    try:
+        try:
+            from ai_engine.telemetry_engine import get_telemetry_for_frame
+        except Exception:
+            from telemetry_engine import get_telemetry_for_frame
+            
+        for r in rows:
+            f = int(r.get("Frame", 1))
+            tel = get_telemetry_for_frame(f, 750, 25.0, corridor_key)
+            r["Latitude"] = tel["latitude"]
+            r["Longitude"] = tel["longitude"]
+            r["Road_Segment"] = tel["road_segment"]
+            r["Corridor"] = tel["corridor"]
+            r["Bus_ID"] = tel["bus_id"]
+            r["Timestamp"] = tel["timestamp"]
+    except Exception as e:
+        print(f"Warning: could not attach telemetry: {e}")
+
     df = pd.DataFrame(rows)
     if df.empty:
         df = pd.DataFrame(columns=[
             "Frame", "Detection", "Confidence",
-            "X1", "Y1", "X2", "Y2", "Source"
+            "X1", "Y1", "X2", "Y2", "Source",
+            "Latitude", "Longitude", "Road_Segment", "Timestamp"
         ])
     df.to_csv(CSV_PATH, index=False)
     return df
@@ -389,7 +408,8 @@ def main():
         ).drop(columns=["_cx", "_cy"])
         rows = df.to_dict("records")
 
-    df = save_csv(rows)
+    corridor = os.environ.get("BUS_CORRIDOR", "bengaluru_bel")
+    df = save_csv(rows, corridor_key=corridor)
 
     # Create a grouped incident CSV for the Reports page.
     incident_path = DATA_DIR / "pothole_incidents.csv"

@@ -1,21 +1,30 @@
 import cv2
 import os
 import json
-import pandas as pd
+from pathlib import Path
 from ultralytics import YOLO
 
-def process_edge_stream(video_path):
-    # YOLOv8 model load karna edge inference ke liye
+def process_edge_stream(video_path, corridor_key=None):
+    if corridor_key is None:
+        corridor_key = os.environ.get("BUS_CORRIDOR", "bengaluru_bel")
+
+    try:
+        from ai_engine.telemetry_engine import get_telemetry_for_frame
+    except Exception:
+        from telemetry_engine import get_telemetry_for_frame
+
     model = YOLO('yolov8n.pt')
     
-    # Output folders setup (Sirf lightweight evidence save karne ke liye)
-    os.makedirs('evidence/edge_snapshots', exist_ok='true')
+    os.makedirs('evidence/edge_snapshots', exist_ok=True)
     
-    cap = cv2.VideoCapture(video_path)
+    cap = cv2.VideoCapture(str(video_path))
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)) or 1
+    fps = cap.get(cv2.CAP_PROP_FPS) or 25.0
+
     frame_count = 0
     edge_incidents = []
     
-    print("[INFO] Edge AI processing started: Discarding raw video, extracting metadata...")
+    print(f"[INFO] Edge AI processing started on corridor '{corridor_key}': Discarding raw video, extracting metadata...")
     
     while cap.isOpened():
         ret, frame = cap.read()
@@ -24,23 +33,25 @@ def process_edge_stream(video_path):
             
         frame_count += 1
         
-        # Har 30th frame par inference chalana (Edge optimization ke liye)
+        # Inference every 30 frames for lightweight edge unit efficiency
         if frame_count % 30 == 0:
             results = model(frame, verbose=False)
             detections = results[0].boxes
             
-            # Agar koi hazard ya object detect hota hai
             if len(detections) > 0:
-                # Evidence snapshot crop/save karo
                 snapshot_name = f"evidence/edge_snapshots/frame_{frame_count:04d}.jpg"
                 cv2.imwrite(snapshot_name, frame)
                 
-                # Lightweight Metadata payload banana (Bandwidth bachane ke liye)
+                tel = get_telemetry_for_frame(frame_count, total_frames, fps, corridor_key)
+
                 incident_meta = {
                     "frame_id": frame_count,
-                    "timestamp": f"2026-09-08 12:00:{frame_count%60:02d}",
-                    "latitude": 26.738600,  # Simulated/Extracted GPS
-                    "longitude": 83.363600,
+                    "timestamp": tel["timestamp"],
+                    "latitude": tel["latitude"],
+                    "longitude": tel["longitude"],
+                    "road_segment": tel["road_segment"],
+                    "bus_id": tel["bus_id"],
+                    "speed_kmh": tel["speed_kmh"],
                     "total_detections": len(detections),
                     "evidence_image": snapshot_name,
                     "status": "FLAGGED_FOR_CLOUD"
@@ -49,13 +60,15 @@ def process_edge_stream(video_path):
                 
     cap.release()
     
-    # Sirf JSON metadata central server ko bhejne ke liye save karna
     with open('edge_metadata_payload.json', 'w') as f:
         json.dump(edge_incidents, f, indent=4)
         
     print(f"[SUCCESS] Edge processing complete. Total incidents filtered: {len(edge_incidents)}")
     print("[INFO] Raw video discarded. Only JSON metadata + evidence saved locally.")
+    return edge_incidents
 
 if __name__ == "__main__":
-    # Test ke liye apni video path de sakte hain
-    process_edge_stream("uploads/sample_road.mp4")
+    from pathlib import Path
+    videos = list(Path("uploads/road_videos").glob("*.mp4"))
+    if videos:
+        process_edge_stream(videos[0])
