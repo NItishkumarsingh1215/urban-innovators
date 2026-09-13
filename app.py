@@ -52,112 +52,283 @@ st.set_page_config(
 # ==============================================================================
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-html, body, [class*="css"], [class*="st-"], .stMarkdown, p, span, label { font-family: 'Inter', sans-serif; color: #f8fafc; }
-.stApp { background: radial-gradient(circle at 10% 20%, #0d1527 0%, #070a13 90%); }
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
+html, body, [class*="css"], [class*="st-"], .stMarkdown, p, span, label { 
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif !important; 
+    color: #f8fafc; 
+}
+
+/* Custom Sleek Dark Scrollbar */
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: #060913; }
+::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.35); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #38bdf8; }
+
+/* Futuristic Ambient Space Background */
+.stApp { 
+    background: radial-gradient(circle at 12% 15%, rgba(14, 165, 233, 0.12) 0%, transparent 45%),
+                radial-gradient(circle at 88% 75%, rgba(99, 102, 241, 0.1) 0%, transparent 45%),
+                radial-gradient(circle at 50% 40%, #0d1528 0%, #060913 100%) !important;
+    background-attachment: fixed !important;
+}
+
+/* Sidebar Ultra-Polished Styling */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #090e1a 0%, #060913 100%) !important;
+    border-right: 1px solid rgba(56, 189, 248, 0.18) !important;
+}
+[data-testid="stSidebar"] hr {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Navigation Radio Pills in Sidebar */
+[data-testid="stSidebar"] [data-testid="stRadio"] > div[role="radiogroup"] {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    gap: 4px !important;
+}
+[data-testid="stSidebar"] [data-testid="stRadio"] label {
+    padding: 8px 14px !important;
+    border-radius: 10px !important;
+    transition: all 0.2s ease !important;
+    border: 1px solid transparent !important;
+    color: #94a3b8 !important;
+    font-size: 0.88rem !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+}
+[data-testid="stSidebar"] [data-testid="stRadio"] label:hover {
+    background: rgba(56, 189, 248, 0.1) !important;
+    color: #f8fafc !important;
+    border-color: rgba(56, 189, 248, 0.25) !important;
+}
+[data-testid="stSidebar"] [data-testid="stRadio"] label[data-checked="true"],
+[data-testid="stSidebar"] [data-testid="stRadio"] label:has(input:checked) {
+    background: linear-gradient(90deg, rgba(6, 182, 212, 0.2) 0%, rgba(59, 130, 246, 0.15) 100%) !important;
+    color: #38bdf8 !important;
+    font-weight: 700 !important;
+    border-color: rgba(56, 189, 248, 0.45) !important;
+    box-shadow: 0 4px 12px rgba(6, 182, 212, 0.15) !important;
+}
+
+/* Executive Top Command Header */
 .executive-header {
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.8) 100%);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    padding: 22px 28px;
+    background: linear-gradient(135deg, rgba(26, 38, 57, 0.85) 0%, rgba(13, 20, 36, 0.9) 100%);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    border-radius: 18px;
+    padding: 24px 30px;
     margin-bottom: 24px;
-    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    box-shadow: 0 12px 35px -8px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+.executive-header::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, #38bdf8 50%, transparent 100%);
 }
 .header-badge {
-    background: rgba(6, 182, 212, 0.15);
-    border: 1px solid rgba(6, 182, 212, 0.35);
+    background: rgba(6, 182, 212, 0.18);
+    border: 1px solid rgba(56, 189, 248, 0.4);
     color: #38bdf8;
-    padding: 4px 12px;
+    padding: 4px 14px;
     border-radius: 9999px;
-    font-size: 0.75rem;
+    font-size: 0.76rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
-    display: inline-block;
+    letter-spacing: 0.06em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     margin-bottom: 8px;
 }
 .header-title {
-    font-size: 2.1rem;
+    font-size: 2.25rem;
     font-weight: 800;
-    letter-spacing: -0.02em;
-    background: linear-gradient(90deg, #ffffff 0%, #cbd5e1 50%, #38bdf8 100%);
+    letter-spacing: -0.025em;
+    background: linear-gradient(90deg, #ffffff 0%, #cbd5e1 45%, #38bdf8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin: 0;
+    line-height: 1.2;
 }
 .header-subtitle {
     color: #94a3b8;
     font-size: 0.95rem;
     font-weight: 400;
     margin-top: 6px;
+    line-height: 1.5;
 }
 
-[data-testid="stMetric"] {
-    background: rgba(15, 23, 42, 0.65) !important;
-    backdrop-filter: blur(12px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.07) !important;
-    padding: 16px 20px !important;
-    border-radius: 14px !important;
-    box-shadow: 0 4px 20px -5px rgba(0,0,0,0.3) !important;
-    transition: transform 0.2s ease, border-color 0.2s ease !important;
+/* Pulsing Radar Status Indicators */
+@keyframes radar-pulse {
+    0% { transform: scale(0.9); opacity: 0.75; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+    70% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+    100% { transform: scale(0.9); opacity: 0.75; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
 }
-[data-testid="stMetric"]:hover {
-    transform: translateY(-3px) !important;
-    border-color: rgba(56, 189, 248, 0.4) !important;
-}
-[data-testid="stMetricLabel"] { font-size: 0.88rem !important; color: #94a3b8 !important; font-weight: 600 !important; }
-[data-testid="stMetricValue"] { font-size: 1.95rem !important; font-weight: 800 !important; color: #f8fafc !important; }
-
 .status-pill {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
+    gap: 7px;
+    padding: 5px 12px;
+    border-radius: 9999px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
 }
-.status-online { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-.status-active { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+.status-online { 
+    background: rgba(16, 185, 129, 0.16); 
+    color: #34d399; 
+    border: 1px solid rgba(16, 185, 129, 0.4); 
+}
+.status-online::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: #34d399;
+    border-radius: 50%;
+    animation: radar-pulse 2s infinite ease-in-out;
+}
+.status-active { 
+    background: rgba(56, 189, 248, 0.16); 
+    color: #38bdf8; 
+    border: 1px solid rgba(56, 189, 248, 0.4); 
+}
 
+/* Executive Metric Cards */
+[data-testid="stMetric"] {
+    background: linear-gradient(135deg, rgba(24, 34, 53, 0.75) 0%, rgba(13, 20, 36, 0.85) 100%) !important;
+    backdrop-filter: blur(14px) !important;
+    border: 1px solid rgba(56, 189, 248, 0.2) !important;
+    border-top: 3px solid #38bdf8 !important;
+    padding: 16px 20px !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.4) !important;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+[data-testid="stMetric"]:hover {
+    transform: translateY(-4px) !important;
+    border-color: rgba(56, 189, 248, 0.6) !important;
+    box-shadow: 0 12px 30px -4px rgba(56, 189, 248, 0.25) !important;
+}
+[data-testid="stMetricLabel"] { 
+    font-size: 0.82rem !important; 
+    color: #94a3b8 !important; 
+    font-weight: 700 !important; 
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+}
+[data-testid="stMetricValue"] { 
+    font-size: 2.1rem !important; 
+    font-weight: 800 !important; 
+    color: #ffffff !important; 
+    letter-spacing: -0.02em !important;
+}
+
+/* Tabs Styling */
+.stTabs [data-baseweb="tab-list"] {
+    background: rgba(15, 23, 42, 0.7) !important;
+    border: 1px solid rgba(56, 189, 248, 0.2) !important;
+    border-radius: 12px !important;
+    padding: 4px !important;
+    gap: 6px !important;
+}
+.stTabs [data-baseweb="tab"] {
+    border-radius: 8px !important;
+    padding: 8px 18px !important;
+    color: #94a3b8 !important;
+    font-weight: 600 !important;
+    border: none !important;
+    transition: all 0.2s ease !important;
+}
+.stTabs [data-baseweb="tab"]:hover {
+    color: #f8fafc !important;
+    background: rgba(56, 189, 248, 0.1) !important;
+}
+.stTabs [aria-selected="true"] {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4) !important;
+}
+
+/* Section Header */
+.section-header {
+    font-size: 1.55rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #f8fafc;
+    margin: 22px 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.18);
+}
+.section-header span {
+    font-size: 1.7rem;
+    filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.4));
+}
+
+/* Geo Tag Badge on Evidence Photos */
+.geo-tag-badge {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.94) 0%, rgba(9, 14, 28, 0.96) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-top: -8px;
+    margin-bottom: 16px;
+    font-size: 0.75rem;
+    color: #e2e8f0;
+    line-height: 1.4;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.geo-tag-badge:hover {
+    border-color: #38bdf8;
+    transform: translateY(-2px);
+}
+
+/* Work Order Cards */
 .work-order-card {
-    background: rgba(15, 23, 42, 0.7);
+    background: linear-gradient(135deg, rgba(26, 34, 52, 0.75) 0%, rgba(15, 23, 42, 0.85) 100%);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-left: 4px solid #f59e0b;
     border-radius: 12px;
     padding: 14px 18px;
     margin-bottom: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.work-order-card:hover {
+    transform: translateX(4px);
+    border-color: rgba(245, 158, 11, 0.6);
 }
 
-.geo-tag-badge {
-    background: rgba(15, 23, 42, 0.88);
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    border-radius: 8px;
-    padding: 8px 10px;
-    margin-top: -6px;
-    margin-bottom: 14px;
-    font-size: 0.74rem;
-    color: #e2e8f0;
-    line-height: 1.35;
-}
-
+/* Buttons */
 .stButton>button {
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
     color: #ffffff !important;
-    border: 1px solid rgba(255,255,255,0.15) !important;
+    border: 1px solid rgba(56, 189, 248, 0.4) !important;
     border-radius: 10px !important;
     font-weight: 600 !important;
     padding: 8px 18px !important;
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.3) !important;
     transition: all 0.2s ease !important;
 }
 .stButton>button:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.5) !important;
-    border-color: #60a5fa !important;
+    box-shadow: 0 8px 22px -4px rgba(56, 189, 248, 0.5) !important;
+    border-color: #38bdf8 !important;
 }
 
-/* HIGH-CONTRAST EXPANDER & ACCORDION STYLING */
+/* Expanders */
 [data-testid="stExpander"] {
     background: rgba(15, 23, 42, 0.75) !important;
     border: 1px solid rgba(56, 189, 248, 0.22) !important;
@@ -204,7 +375,7 @@ html, body, [class*="css"], [class*="st-"], .stMarkdown, p, span, label { font-f
     border-radius: 0 0 12px 12px !important;
 }
 
-/* DATA REGISTRY CARD & BADGES */
+/* Data Registry Cards & Badges */
 .register-card {
     background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%);
     backdrop-filter: blur(14px);
@@ -227,7 +398,7 @@ html, body, [class*="css"], [class*="st-"], .stMarkdown, p, span, label { font-f
     gap: 5px;
 }
 
-/* STYLED DOWNLOAD BUTTONS */
+/* Download Buttons */
 [data-testid="stDownloadButton"] > button {
     background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
     color: #ffffff !important;
@@ -246,30 +417,12 @@ html, body, [class*="css"], [class*="st-"], .stMarkdown, p, span, label { font-f
     transform: translateY(-2px) !important;
 }
 
-/* DATAFRAME & TABLE STYLING */
+/* DataFrame & Table */
 [data-testid="stDataFrame"], [data-testid="stTable"] {
     border: 1px solid rgba(56, 189, 248, 0.2) !important;
     border-radius: 10px !important;
     overflow: hidden !important;
     box-shadow: 0 4px 16px rgba(0,0,0,0.3) !important;
-}
-
-/* RADIO GROUP CONTAINER */
-[data-testid="stRadio"] > div[role="radiogroup"] {
-    background: rgba(15, 23, 42, 0.6) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
-    border-radius: 10px !important;
-    padding: 8px 14px !important;
-}
-
-.section-header {
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: #f1f5f9;
-    margin: 18px 0 12px 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -314,21 +467,25 @@ def render_evidence_gallery(images, corridor_key, cols_count=4, max_display=None
             st.image(str(img_path), use_container_width=True)
             st.markdown(f"""
             <div class="geo-tag-badge">
-                <div style="font-weight:700; color:#38bdf8;">📍 {tel['latitude']:.5f}, {tel['longitude']:.5f}</div>
+                <div style="font-weight:700; color:#38bdf8; display:flex; align-items:center; gap:4px;">📍 <span>{tel['latitude']:.5f}, {tel['longitude']:.5f}</span></div>
                 <div style="color:#94a3b8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="{tel['road_segment']}">🛣️ {tel['road_segment']}</div>
-                <div style="color:#cbd5e1; font-size:0.7rem; margin-top:2px;">⏱️ Frame #{tel['frame']} | 🚌 {tel['bus_id']}</div>
+                <div style="color:#cbd5e1; font-size:0.7rem; margin-top:3px; display:flex; justify-content:space-between;">
+                    <span>⏱️ Frame #{tel['frame']}</span>
+                    <span style="color:#34d399; font-weight:600;">🚌 {tel['bus_id']}</span>
+                </div>
             </div>
             """, unsafe_allow_html=True)
 
 def render_empty_state(category_name, corridor_key):
     st.markdown(f"""
-    <div style="background:rgba(15,23,42,0.6); border:1px dashed rgba(56,189,248,0.3); border-radius:12px; padding:24px; text-align:center; margin:16px 0;">
-        <div style="font-size:1.1rem; font-weight:700; color:#e2e8f0;">No {category_name} data logged in current run.</div>
-        <div style="font-size:0.85rem; color:#94a3b8; margin:8px 0 16px 0;">Upload a video in the <b>'🎥 Video & Automated AI Pipeline'</b> tab to auto-extract real-time events.</div>
+    <div style="background: linear-gradient(135deg, rgba(20, 28, 45, 0.6) 0%, rgba(11, 16, 28, 0.7) 100%); border: 1px dashed rgba(56,189,248,0.4); border-radius:14px; padding:32px 24px; text-align:center; margin:18px 0; box-shadow: 0 6px 20px rgba(0,0,0,0.3);">
+        <div style="font-size:2.4rem; margin-bottom:8px; filter:drop-shadow(0 0 10px rgba(56,189,248,0.3));">📡</div>
+        <div style="font-size:1.2rem; font-weight:700; color:#f8fafc;">No {category_name} Events Recorded in Active Stream</div>
+        <div style="font-size:0.88rem; color:#94a3b8; max-width:540px; margin:8px auto 16px auto;">Upload a bus camera stream in the <b>'🎥 Video & Automated AI Pipeline'</b> tab or trigger the Edge AI engine below to auto-extract events.</div>
     </div>
     """, unsafe_allow_html=True)
     cur_vid = UPLOAD_DIR / "active_road_stream.mp4"
-    if cur_vid.exists() and st.button(f"⚡ Re-run AI Pipeline on Active Stream", key=f"run_empty_{category_name}"):
+    if cur_vid.exists() and st.button(f"⚡ Execute Edge AI Pipeline on Active Stream", key=f"run_empty_{category_name}"):
         with st.spinner("Executing Edge AI Detection Pipeline..."):
             res = run_master_pipeline(cur_vid, corridor_key=corridor_key)
             if res.get("success"):
@@ -340,11 +497,12 @@ def render_empty_state(category_name, corridor_key):
 # SIDEBAR NAVIGATION, IGNITION & TELEMETRY SYNC
 # ==============================================================================
 st.sidebar.markdown("""
-<div style="padding: 10px 0 15px 0;">
-    <div style="font-size: 1.15rem; font-weight: 800; color: #f8fafc; display:flex; align-items:center; gap:8px;">
-        <span>🛰️</span> BEL Urban Fleet
+<div style="padding: 10px 0 16px 0; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 14px;">
+    <div style="font-size: 1.25rem; font-weight: 800; color: #f8fafc; display:flex; align-items:center; gap:9px; letter-spacing:-0.02em;">
+        <span style="filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.6)); font-size:1.4rem;">🛰️</span> BEL Urban Fleet
     </div>
-    <div style="font-size: 0.78rem; color: #64748b;">Smart India Hackathon • PS 26124</div>
+    <div style="font-size: 0.78rem; color: #38bdf8; font-weight: 600; margin-top:2px;">Smart India Hackathon • PS 26124</div>
+    <div style="font-size: 0.72rem; color: #64748b; margin-top:1px;">Bharat Electronics Ltd • MeitY</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -364,11 +522,17 @@ active_corridor = st.sidebar.selectbox(
 corridor_meta = TRANSIT_CORRIDORS.get(active_corridor, TRANSIT_CORRIDORS["gorakhpur_smart"])
 
 st.sidebar.markdown(f"""
-<div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 10px 14px; margin: 10px 0 18px 0; font-size: 0.78rem;">
-    <div style="color: #38bdf8; font-weight: 700;">🚌 Bus Unit: {corridor_meta['bus_id']}</div>
-    <div style="color: #94a3b8; margin-top: 2px;">City: {corridor_meta['city']}</div>
-    <div style="color: #34d399; margin-top: 5px;" class="status-pill status-online">⚡ Ignition: ON (Auto-Triggered)</div>
-    <div style="color: #60a5fa; margin-top: 4px;" class="status-pill status-active">🛰️ HQ Sync: Online (15m Depot)</div>
+<div style="background: linear-gradient(135deg, rgba(20, 28, 45, 0.85) 0%, rgba(12, 18, 32, 0.95) 100%); border: 1px solid rgba(56, 189, 248, 0.28); border-radius: 12px; padding: 12px 14px; margin: 10px 0 18px 0; font-size: 0.78rem; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+    <div style="color: #38bdf8; font-weight: 700; font-size: 0.85rem; display:flex; justify-content:space-between; align-items:center;">
+        <span>🚌 {corridor_meta['bus_id']}</span>
+        <span class="status-pill status-online">LIVE</span>
+    </div>
+    <div style="color: #cbd5e1; margin-top: 4px; font-weight:500;"><b>City:</b> {corridor_meta['city']}</div>
+    <div style="color: #94a3b8; font-size:0.72rem; margin-top: 2px;">{corridor_meta['bus_route']}</div>
+    <div style="margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px; display:flex; flex-direction:column; gap:4px;">
+        <span style="color: #34d399; font-size: 0.72rem; font-weight:600;">⚡ Automated Ignition: Active</span>
+        <span style="color: #60a5fa; font-size: 0.72rem; font-weight:600;">🛰️ HQ Sync: Online (15m Depot)</span>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -394,15 +558,17 @@ navigation = st.sidebar.radio(
 # Global Top Executive Header
 st.markdown(f"""
 <div class="executive-header">
-    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
         <div>
-            <div class="header-badge">BHARAT ELECTRONICS LIMITED (BEL) • SMART AUTOMATION</div>
+            <div class="header-badge">
+                <span>🛰️</span> BHARAT ELECTRONICS LIMITED (BEL) • SMART AUTOMATION
+            </div>
             <div class="header-title">AI-Powered Mobile Urban Intelligence Platform</div>
-            <div class="header-subtitle">Continuous Mobile Sensing Fleet • Road Hazards, Traffic Density, Vulnerable Pedestrians, Sanitation & Signal Faults</div>
+            <div class="header-subtitle">Continuous Mobile Sensing Fleet • Road Hazards, Traffic Density, Vulnerable Pedestrians, Sanitation & Signal Diagnostics</div>
         </div>
-        <div style="display:flex; gap:8px;">
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
             <span class="status-pill status-online">⚡ Ignition Auto-Trigger Active</span>
-            <span class="status-pill status-active">🛰️ GPS Telemetry & HQ Synced</span>
+            <span class="status-pill status-active">🛰️ GPS Telemetry Synced</span>
         </div>
     </div>
 </div>
@@ -427,6 +593,16 @@ df_incidents = load_csv("incidents.csv")
 if navigation == "🏠 Executive Dashboard":
     st.markdown('<div class="section-header"><span>📊</span> City-Wide Fleet Intelligence Overview</div>', unsafe_allow_html=True)
     
+    st.markdown("""
+    <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(15,23,42,0.65); border:1px solid rgba(56,189,248,0.2); border-radius:10px; padding:9px 16px; margin-bottom:18px;">
+        <div style="display:flex; align-items:center; gap:8px; font-size:0.85rem; color:#cbd5e1;">
+            <span class="status-pill status-online">LIVE MULTI-HAZARD SENSING</span>
+            <span>Continuous edge inference active across 8 municipal neural pipelines</span>
+        </div>
+        <div style="font-size:0.75rem; color:#94a3b8; font-family:'JetBrains Mono', monospace;">SYNC: 10Hz • ZERO-DISK RAM</div>
+    </div>
+    """, unsafe_allow_html=True)
+
     c1, c2, c3, c4 = st.columns(4)
     c1.metric("🕳️ Road Defects", len(df_potholes))
     c2.metric("🚧 Infra Deficiencies", len(df_infra))
@@ -442,21 +618,28 @@ if navigation == "🏠 Executive Dashboard":
     st.markdown("---")
     col_l, col_r = st.columns([3, 2])
     with col_l:
-        st.subheader("🚨 Priority Incidents & Dispatch Status")
+        st.markdown('<div style="font-size:1.15rem; font-weight:700; color:#f8fafc; margin-bottom:10px; display:flex; align-items:center; gap:8px;"><span>🚨</span> Priority Incidents & Municipal Dispatch Feed</div>', unsafe_allow_html=True)
         if not df_incidents.empty:
             st.dataframe(df_incidents[["incident_id", "incident_type", "severity", "Latitude", "Longitude", "Road_Segment", "Action_Required", "Status"]].head(8), use_container_width=True)
         else:
             render_empty_state("Incidents", active_corridor)
 
     with col_r:
-        st.subheader("🚌 Sensing Fleet Connectivity")
+        st.markdown('<div style="font-size:1.15rem; font-weight:700; color:#f8fafc; margin-bottom:10px; display:flex; align-items:center; gap:8px;"><span>🚌</span> Sensing Fleet Connectivity</div>', unsafe_allow_html=True)
         st.markdown(f"""
-        <div style="background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:16px;">
-            <div style="font-weight:700; color:#38bdf8; font-size:1.05rem;">{corridor_meta['name']}</div>
-            <div style="color:#94a3b8; font-size:0.85rem; margin-top:4px;"><b>Bus Unit:</b> {corridor_meta['bus_id']} | <b>Speed:</b> ~32 km/h</div>
-            <div style="color:#cbd5e1; font-size:0.85rem; margin-top:6px;"><b>Start:</b> {corridor_meta['waypoints'][0]['name']}</div>
-            <div style="color:#cbd5e1; font-size:0.85rem;"><b>Terminal:</b> {corridor_meta['waypoints'][-1]['name']}</div>
-            <div style="margin-top:10px; color:#34d399; font-size:0.8rem; font-weight:600;">✓ Automated Ignition Sensing & Frame GPS Synced</div>
+        <div style="background: linear-gradient(135deg, rgba(20, 28, 45, 0.85) 0%, rgba(12, 18, 32, 0.95) 100%); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 14px; padding: 18px; box-shadow: 0 8px 24px -6px rgba(0,0,0,0.4);">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-weight: 800; color: #38bdf8; font-size: 1.08rem;">{corridor_meta['name']}</div>
+                <span class="status-pill status-online">ON-ROUTE</span>
+            </div>
+            <div style="color: #94a3b8; font-size: 0.85rem; margin-top: 6px;"><b>Unit ID:</b> <code>{corridor_meta['bus_id']}</code> | <b>Cruising Speed:</b> ~32 km/h</div>
+            <div style="margin-top: 10px; background: rgba(15, 23, 42, 0.6); padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06);">
+                <div style="color: #cbd5e1; font-size: 0.82rem;">🚩 <b>Origin:</b> {corridor_meta['waypoints'][0]['name']}</div>
+                <div style="color: #cbd5e1; font-size: 0.82rem; margin-top: 3px;">🏁 <b>Terminal:</b> {corridor_meta['waypoints'][-1]['name']}</div>
+            </div>
+            <div style="margin-top: 12px; color: #34d399; font-size: 0.8rem; font-weight: 600; display:flex; align-items:center; gap:6px;">
+                <span>✓</span> Automated Ignition Sensing & Frame GPS Synced
+            </div>
         </div>
         """, unsafe_allow_html=True)
         if not df_traffic.empty:
