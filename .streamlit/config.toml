@@ -7,6 +7,11 @@ textColor = "#f8fafc"
 font = "sans serif"
 
 [server]
-runOnSave = true
-headless = false
+headless = true
+enableCORS = false
+enableXsrfProtection = false
 maxUploadSize = 500
+
+[browser]
+gatherUsageStats = false
+
