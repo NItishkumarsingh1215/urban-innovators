@@ -1217,6 +1217,19 @@ elif navigation == "📊 Reports & Data Export":
             use_container_width=True
         )
 
+    with col_btn3:
+        pdf_report_path = BASE_DIR / "SIH26124_Urban_Intelligence_Architecture_Report.pdf"
+        if pdf_report_path.exists():
+            with open(pdf_report_path, "rb") as pf:
+                pdf_bytes = pf.read()
+            st.download_button(
+                label="📄 Download Technical Report (PDF)",
+                data=pdf_bytes,
+                file_name="SIH26124_Urban_Intelligence_Architecture_Report.pdf",
+                mime="application/pdf",
+                use_container_width=True
+            )
+
     # Master list of 11 municipal registers with metadata & descriptions
     reports_meta = [
         {
