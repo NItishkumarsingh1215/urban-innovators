@@ -8,5 +8,5 @@ font = "sans serif"
 
 [server]
 runOnSave = true
-headless = true
+headless = false
 maxUploadSize = 500

@@ -89,19 +89,10 @@ def analyze_traffic(video_path, output_csv="data/traffic_results.csv", evidence_
                 cv2.putText(annotated_frame, f"{vehicle_name} #{track_id}", (x1, max(y1 - 8, 20)),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 2)
 
-        # Traffic congestion categorization
-        if current_frame_vehicles >= 8:
-            traffic_level = "High"
-            is_bottleneck = True
-            level_color = (0, 0, 255)
-        elif current_frame_vehicles >= 4:
-            traffic_level = "Medium"
-            is_bottleneck = False
-            level_color = (0, 165, 255)
-        else:
-            traffic_level = "Low"
-            is_bottleneck = False
-            level_color = (0, 255, 0)
+        # Traffic congestion & bottleneck categorization
+        traffic_level = "High" if current_frame_vehicles >= 4 else ("Medium" if current_frame_vehicles >= 2 else "Low")
+        is_bottleneck = current_frame_vehicles >= 4 or (current_frame_vehicles >= 3 and telemetry["speed_kmh"] < 36.0) or (current_frame_vehicles >= 2 and telemetry["speed_kmh"] < 32.0)
+        level_color = (0, 0, 255) if is_bottleneck else ((0, 165, 255) if traffic_level == "High" else (0, 255, 0))
 
         results_data.append({
             "Frame": frame_number,
@@ -121,16 +112,17 @@ def analyze_traffic(video_path, output_csv="data/traffic_results.csv", evidence_
             "Speed_kmh": telemetry["speed_kmh"]
         })
 
-        # Save annotated evidence frame when traffic is medium/high
-        if (current_frame_vehicles >= 4 or is_bottleneck) and evidence_count < 20 and (frame_number % (sample_step * 2) == 0):
+        # Save annotated evidence frame when traffic or bottleneck is detected
+        if (current_frame_vehicles >= 2 or is_bottleneck) and evidence_count < 35 and (frame_number % (sample_step * 2) == 0):
             # Overlay info header
             cv2.rectangle(annotated_frame, (15, 15), (780, 100), (15, 23, 42), -1)
             cv2.rectangle(annotated_frame, (15, 15), (780, 100), level_color, 2)
-            cv2.putText(annotated_frame, f"TRAFFIC DENSITY: {traffic_level.upper()} ({current_frame_vehicles} Vehicles)",
+            banner_txt = f"🚨 BOTTLENECK CHOKE POINT ({current_frame_vehicles} Vehicles)" if is_bottleneck else f"TRAFFIC DENSITY: {traffic_level.upper()} ({current_frame_vehicles} Vehicles)"
+            cv2.putText(annotated_frame, banner_txt,
                         (30, 42), cv2.FONT_HERSHEY_SIMPLEX, 0.7, level_color, 2)
             cv2.putText(annotated_frame, f"GPS: {telemetry['latitude']}, {telemetry['longitude']} | {telemetry['road_segment']}",
                         (30, 68), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-            cv2.putText(annotated_frame, f"Total Seen -> Cars: {total_cars} | Bikes: {total_bikes} | Buses: {total_buses} | Trucks: {total_trucks}",
+            cv2.putText(annotated_frame, f"Speed: {telemetry['speed_kmh']} km/h | Total Seen -> Cars: {total_cars} | Bikes: {total_bikes} | Buses: {total_buses} | Trucks: {total_trucks}",
                         (30, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (200, 220, 255), 1)
 
             evidence_file = evidence_dir / f"traffic_frame_{frame_number:05d}.jpg"

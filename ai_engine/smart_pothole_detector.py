@@ -279,8 +279,13 @@ def surface_cavity_fallback(source):
                 continue
 
             aspect = cw / float(max(1, ch))
-            if aspect < 0.25 or aspect > 4.5:
+            if aspect < 0.25 or aspect > 4.2:
                 continue
+
+            # Reject asphalt patch-work (smooth rectangular patches with high fill ratio)
+            extent = area / float(max(1, cw * ch))
+            if extent > 0.85:
+                continue  # Flat asphalt patch, not a road cavity
 
             # Prefer lower/middle road area and reasonably compact cavities.
             cy = y + ch / 2.0
@@ -290,13 +295,17 @@ def surface_cavity_fallback(source):
             patch = blackhat[y:y+ch, x:x+cw]
             response = float(np.mean(patch)) if patch.size else 0.0
 
+            # Reject soft shadow borders (shadows lack internal cavity depression)
+            if response < 18.0:
+                continue
+
             score = (
                 0.35 * min(1.0, area / (image_area * 0.01)) +
                 0.45 * min(1.0, response / 70.0) +
                 0.20 * position_score
             )
 
-            if response < 16 or score < 0.28:
+            if score < 0.25:
                 continue
 
             candidates.append((score, area, x, y, cw, ch))
@@ -328,20 +337,26 @@ def surface_cavity_fallback(source):
 
         detected_centers.append((frame_no, cx, cy))
 
-        confidence = min(0.96, max(0.42, 0.42 + score * 0.50))
+        confidence = min(0.96, max(0.45, 0.45 + score * 0.50))
+        est_depth = round(2.5 + min(12.0, (area / 320.0) * 1.6), 1)
+        severity = "CRITICAL" if est_depth >= 6.0 else ("HIGH" if est_depth >= 4.0 else "MEDIUM")
 
         rows.append({
             "Frame": int(frame_no),
             "Detection": "POTHOLE",
             "Confidence": round(float(confidence), 4),
+            "Estimated_Depth_cm": est_depth,
+            "Severity": severity,
+            "Area_px": int(area),
             "X1": int(max(0, x1)),
             "Y1": int(max(0, y1)),
             "X2": int(min(w - 1, x2)),
             "Y2": int(min(h - 1, y2)),
+            "Action_Required": "Asphalt Cold-Mix Repair (PWD/NHAI)",
             "Source": "OPENCV_SURFACE_CAVITY"
         })
 
-        if len(saved_frames) < 20:
+        if len(saved_frames) < 25:
             annotated = frame.copy()
             cv2.rectangle(
                 annotated, (x1, y1), (x2, y2),
@@ -349,7 +364,7 @@ def surface_cavity_fallback(source):
             )
             cv2.putText(
                 annotated,
-                f"POTHOLE {confidence:.2f}",
+                f"POTHOLE {confidence:.2f} ({est_depth}cm - {severity})",
                 (max(5, x1), max(28, y1 - 10)),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.75,
@@ -361,8 +376,7 @@ def surface_cavity_fallback(source):
             if cv2.imwrite(str(target), annotated):
                 saved_frames.add(frame_no)
 
-        # A few independent detections are enough for the prototype.
-        if len(rows) >= 25:
+        if len(rows) >= 30:
             break
 
     cap.release()

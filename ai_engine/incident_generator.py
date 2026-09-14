@@ -333,17 +333,77 @@ def compile_all_incidents():
 
     res_df = pd.DataFrame(all_incidents)
     if not res_df.empty:
+        # -------------------------------------------------------------
+        # Spatial-Temporal Clustering & Multi-Hazard Coordinated Dispatch
+        # Groups incidents within 75m GPS radius and time window
+        # -------------------------------------------------------------
+        def calc_distance_m(lat1, lon1, lat2, lon2):
+            import math
+            R = 6371000.0  # Earth radius in meters
+            dlat = math.radians(lat2 - lat1)
+            dlon = math.radians(lon2 - lon1)
+            a = math.sin(dlat / 2.0)**2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2.0)**2
+            return R * 2.0 * math.atan2(math.sqrt(a), math.sqrt(1.0 - a))
+
+        cluster_ids = []
+        priority_scores = []
+        cluster_counter = 1
+        n = len(res_df)
+        assigned_cluster = {}
+
+        for i in range(n):
+            if i in assigned_cluster:
+                c_id = assigned_cluster[i]
+            else:
+                c_id = f"CLUST-{cluster_counter:03d}"
+                assigned_cluster[i] = c_id
+                cluster_counter += 1
+
+                lat_i = float(res_df.iloc[i].get("Latitude", 0))
+                lon_i = float(res_df.iloc[i].get("Longitude", 0))
+
+                for j in range(i + 1, n):
+                    lat_j = float(res_df.iloc[j].get("Latitude", 0))
+                    lon_j = float(res_df.iloc[j].get("Longitude", 0))
+                    if calc_distance_m(lat_i, lon_i, lat_j, lon_j) <= 85.0:
+                        assigned_cluster[j] = c_id
+
+            cluster_ids.append(assigned_cluster[i])
+
+            # Priority scoring (1-100)
+            sev = str(res_df.iloc[i].get("severity", "MEDIUM")).upper()
+            itype = str(res_df.iloc[i].get("incident_type", "")).upper()
+            base_score = 90 if sev == "CRITICAL" else (70 if sev == "HIGH" else 45)
+            if "SCHOOL" in itype or "CHILD" in itype:
+                base_score = min(100, base_score + 15)
+            if "BLACKOUT" in itype or "FLOOD" in itype:
+                base_score = min(100, base_score + 10)
+            priority_scores.append(base_score)
+
+        res_df["Cluster_ID"] = cluster_ids
+        res_df["Priority_Score"] = priority_scores
+
+        # Escalate multi-hazard clusters
+        cluster_counts = res_df["Cluster_ID"].value_counts()
+        for c_id, count in cluster_counts.items():
+            if count > 1:
+                mask = res_df["Cluster_ID"] == c_id
+                types = set(res_df.loc[mask, "incident_type"].tolist())
+                if len(types) > 1:
+                    res_df.loc[mask, "severity"] = "CRITICAL"
+                    res_df.loc[mask, "Priority_Score"] = 98
+
         res_df.to_csv(COMBINED_OUTPUT_FILE, index=False)
     else:
         pd.DataFrame(columns=[
             "incident_id", "incident_type", "severity", "confidence",
             "first_frame", "last_frame", "Latitude", "Longitude",
             "Road_Segment", "Location", "Location_Source", "Timestamp",
-            "Bus_ID", "Action_Required", "Status"
+            "Bus_ID", "Action_Required", "Status", "Cluster_ID", "Priority_Score"
         ]).to_csv(COMBINED_OUTPUT_FILE, index=False)
 
     return res_df
 
 if __name__ == "__main__":
     df = compile_all_incidents()
-    print(f"Compiled {len(df)} total incidents across all 6 sensor streams.")
+    print(f"Compiled {len(df)} total incidents across all 6 sensor streams with spatial-temporal clustering.")

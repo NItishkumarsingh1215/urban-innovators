@@ -34,3 +34,5 @@ evidence/smart_detections/
 # Temporary / generated files
 *.tmp
 *.log
+*.flag
+output/

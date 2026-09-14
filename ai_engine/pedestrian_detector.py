@@ -47,34 +47,51 @@ def analyze_pedestrians(video_path, output_csv="data/pedestrian_results.csv", ev
         annotated_frame = frame.copy()
 
         # Track person class (0 in COCO)
-        yolo_results = model.track(frame, persist=True, verbose=False, conf=0.35, classes=[0])
+        # Track person class (0 in COCO) with optimal confidence
+        yolo_results = model.track(frame, persist=True, verbose=False, conf=0.25, classes=[0])
         
         pedestrian_count = 0
         school_children_count = 0
-        is_school_zone = "School" in telemetry["road_segment"] or "Junction" in telemetry["road_segment"]
+        is_school_zone = any(k in telemetry["road_segment"] for k in ["School", "Junction", "Circle", "Crossing", "Chauraha", "Station"])
+
+        h_img, w_img = frame.shape[:2]
 
         if yolo_results[0].boxes is not None:
             boxes = yolo_results[0].boxes.xyxy.cpu().numpy().astype(int)
             for box in boxes:
-                pedestrian_count += 1
                 x1, y1, x2, y2 = box
                 h = y2 - y1
                 w = x2 - x1
 
-                # School children heuristic: smaller bbox height / aspect ratio in or near school zones
-                is_child = (h < 120 and is_school_zone) or (h < 90)
+                # Exclude only lower host vehicle dashboard/hood
+                if y2 > int(h_img * 0.72):
+                    continue
+                if h < 14:
+                    continue
+
+                pedestrian_count += 1
+
+                # Velocity vector & Time-To-Collision (TTC) heuristic
+                rel_y = max(0.05, (h_img * 0.72 - y2) / float(h_img * 0.72))
+                dist_est = round(max(2.0, rel_y * 38.0), 1)
+                bus_speed_mps = max(4.0, telemetry["speed_kmh"] / 3.6)
+                ttc_sec = round(dist_est / bus_speed_mps, 1)
+                is_near_miss = ttc_sec < 3.0
+
+                # School children heuristic: smaller bbox in or near school zones
+                is_child = (h < int(h_img * 0.18) and is_school_zone) or (h < int(h_img * 0.12))
                 if is_child:
                     school_children_count += 1
-                    color = (0, 140, 255)  # Orange for children
-                    label = "School Child"
+                    color = (0, 0, 255) if is_near_miss else (0, 140, 255)  # Orange/Red for children
+                    label = f"School Child ({dist_est}m, TTC:{ttc_sec}s)"
                 else:
-                    color = (255, 0, 0)    # Blue for regular pedestrian
-                    label = "Pedestrian"
+                    color = (0, 0, 255) if is_near_miss else (0, 215, 255)
+                    label = f"Pedestrian ({dist_est}m, TTC:{ttc_sec}s)"
 
                 cv2.rectangle(annotated_frame, (x1, y1), (x2, y2), color, 2)
-                cv2.putText(annotated_frame, label, (x1, max(y1 - 8, 20)), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+                cv2.putText(annotated_frame, label, (x1, max(y1 - 8, 20)), cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
 
-        is_vulnerable = pedestrian_count >= 2 or school_children_count > 0 or (pedestrian_count > 0 and is_school_zone)
+        is_vulnerable = pedestrian_count >= 1 or school_children_count > 0 or (pedestrian_count > 0 and is_school_zone)
 
         results.append({
             "Frame": frame_number,
@@ -91,17 +108,17 @@ def analyze_pedestrians(video_path, output_csv="data/pedestrian_results.csv", ev
         })
 
         # Save evidence if vulnerable pedestrian situation detected
-        if is_vulnerable and evidence_count < 20 and (frame_number % (sample_step * 2) == 0):
-            status_text = "SCHOOL CHILDREN CROSSING" if school_children_count > 0 else f"VULNERABLE PEDESTRIANS ({pedestrian_count})"
+        if is_vulnerable and evidence_count < 35 and (frame_number % (sample_step * 2) == 0):
+            status_text = f"SCHOOL CHILDREN CROSSING ({school_children_count})" if school_children_count > 0 else f"VULNERABLE PEDESTRIANS ({pedestrian_count})"
             box_color = (0, 0, 255) if school_children_count > 0 else (0, 165, 255)
 
             cv2.rectangle(annotated_frame, (15, 15), (780, 100), (15, 23, 42), -1)
             cv2.rectangle(annotated_frame, (15, 15), (780, 100), box_color, 2)
             cv2.putText(annotated_frame, f"SAFETY ALERT: {status_text}", (30, 42), cv2.FONT_HERSHEY_SIMPLEX, 0.7, box_color, 2)
             cv2.putText(annotated_frame, f"GPS: {telemetry['latitude']}, {telemetry['longitude']} | {telemetry['road_segment']}", (30, 68), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 1)
-            cv2.putText(annotated_frame, f"Bus: {telemetry['bus_id']} | Bus Speed: {telemetry['speed_kmh']} km/h", (30, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (200, 220, 255), 1)
+            cv2.putText(annotated_frame, f"Bus: {telemetry['bus_id']} | Bus Speed: {telemetry['speed_kmh']} km/h | Driver ADAS Warning Active", (30, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (200, 220, 255), 1)
 
-            evidence_file = evidence_dir / f"pedestrian_hazard_frame_{frame_number:05d}.jpg"
+            evidence_file = evidence_dir / f"ped_frame_{frame_number:05d}.jpg"
             cv2.imwrite(str(evidence_file), annotated_frame)
             evidence_count += 1
 

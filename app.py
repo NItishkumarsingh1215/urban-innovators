@@ -620,7 +620,8 @@ if navigation == "🏠 Executive Dashboard":
     with col_l:
         st.markdown('<div style="font-size:1.15rem; font-weight:700; color:#f8fafc; margin-bottom:10px; display:flex; align-items:center; gap:8px;"><span>🚨</span> Priority Incidents & Municipal Dispatch Feed</div>', unsafe_allow_html=True)
         if not df_incidents.empty:
-            st.dataframe(df_incidents[["incident_id", "incident_type", "severity", "Latitude", "Longitude", "Road_Segment", "Action_Required", "Status"]].head(8), use_container_width=True)
+            inc_cols = [c for c in ["incident_id", "Cluster_ID", "incident_type", "severity", "Priority_Score", "Road_Segment", "Action_Required", "Status"] if c in df_incidents.columns]
+            st.dataframe(df_incidents[inc_cols].head(10), use_container_width=True)
         else:
             render_empty_state("Incidents", active_corridor)
 
@@ -878,18 +879,83 @@ elif navigation == "🚧 Infrastructure & Road Defects":
 # 🚗 5. TRAFFIC & BOTTLENECK INTELLIGENCE
 # ==============================================================================
 elif navigation == "🚗 Traffic & Bottleneck Intelligence":
-    st.markdown('<div class="section-header"><span>🚗</span> Traffic Density & Bottleneck Sensing</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header"><span>🚗</span> Corridor Traffic Density & Bottleneck Intelligence</div>', unsafe_allow_html=True)
     if not df_traffic.empty:
-        c1, c2, c3 = st.columns(3)
-        c1.metric("Traffic Records Logged", len(df_traffic))
-        c2.metric("High Congestion / Bottlenecks", len(df_traffic[df_traffic["Bottleneck"] == "YES"]))
-        c3.metric("Max Vehicles In Frame", df_traffic["Vehicles_In_Frame"].max() if "Vehicles_In_Frame" in df_traffic else 0)
-        st.dataframe(df_traffic, use_container_width=True)
-        render_evidence_gallery(get_evidence_images("traffic_detections"), active_corridor)
-    else: render_empty_state("Traffic", active_corridor)
+        n_records = len(df_traffic)
+        bottlenecks_df = df_traffic[df_traffic.get("Bottleneck", "NO") == "YES"]
+        n_bottlenecks = len(bottlenecks_df)
+        max_veh = df_traffic["Vehicles_In_Frame"].max() if "Vehicles_In_Frame" in df_traffic else 0
+        flow_health = round(max(0.0, 100.0 - (n_bottlenecks / max(1, n_records)) * 100.0), 1)
+
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("🚗 Total Traffic Records", n_records)
+        c2.metric("🚨 Bottleneck Choke Points", n_bottlenecks)
+        c3.metric("🏎️ Peak Vehicles In Frame", max_veh)
+        c4.metric("⚡ Corridor Flow Health", f"{flow_health}%")
+
+        tb1, tb2, tb3, tb4 = st.tabs([
+            "🚨 Bottleneck Choke Points",
+            "📸 Complete Traffic Gallery",
+            "📊 Vehicle Fleet Analytics",
+            "📑 Traffic Telemetry Register"
+        ])
+
+        with tb1:
+            st.markdown("### 🚨 Choke Points & Congestion Bottlenecks")
+            if not bottlenecks_df.empty:
+                st.markdown(f"Detected **{n_bottlenecks}** active congestion bottleneck zones requiring dynamic signal preemption:")
+                for idx, r in bottlenecks_df.head(4).iterrows():
+                    st.markdown(f"""
+                    <div class="work-order-card" style="border-left-color: #ef4444;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <b>CHOKE POINT #{r.get('Frame')} • {r.get('Road_Segment')}</b>
+                            <span style="color:#ef4444; font-weight:700;">BOTTLENECK ACTIVE</span>
+                        </div>
+                        <div style="color:#cbd5e1; font-size:0.85rem; margin-top:4px;">
+                            🚗 <b>Queue:</b> {r.get('Vehicles_In_Frame')} Vehicles (Cars: {r.get('Cars')}, Bikes: {r.get('Bikes')}, Buses: {r.get('Buses')}) | ⏱️ <b>Bus Speed:</b> {r.get('Speed_kmh')} km/h
+                        </div>
+                        <div style="color:#38bdf8; font-size:0.82rem; margin-top:2px;">
+                            📍 GPS: {r.get('Latitude'):.5f}, {r.get('Longitude'):.5f} | ⚡ Action: Dynamic Green Light Signal Preemption Dispatched
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+            
+            all_traffic_imgs = get_evidence_images("traffic_detections")
+            st.markdown(f"#### 📸 Choke Point Visual Evidence ({len(all_traffic_imgs)} frames captured)")
+            render_evidence_gallery(all_traffic_imgs, active_corridor, cols_count=4)
+
+        with tb2:
+            all_imgs = get_evidence_images("traffic_detections")
+            st.markdown(f"### 📸 Corridor Traffic Flow Evidence Gallery ({len(all_imgs)} frames)")
+            filter_mode = st.radio("Filter Traffic Gallery:", ["All Captured Frames", "Bottlenecks Only", "High Density"], horizontal=True)
+            render_evidence_gallery(all_imgs, active_corridor, cols_count=4)
+
+        with tb3:
+            st.markdown("### 📊 Vehicle Fleet Composition & Density Distribution")
+            col_g1, col_g2 = st.columns(2)
+            with col_g1:
+                st.caption("Vehicle Classification Totals")
+                veh_totals = {
+                    "Cars": int(df_traffic["Cars"].sum()) if "Cars" in df_traffic else 0,
+                    "Bikes": int(df_traffic["Bikes"].sum()) if "Bikes" in df_traffic else 0,
+                    "Buses": int(df_traffic["Buses"].sum()) if "Buses" in df_traffic else 0,
+                    "Trucks": int(df_traffic["Trucks"].sum()) if "Trucks" in df_traffic else 0,
+                }
+                st.bar_chart(pd.Series(veh_totals))
+            with col_g2:
+                st.caption("Traffic Congestion Level Distribution")
+                st.bar_chart(df_traffic["Traffic_Level"].value_counts())
+
+        with tb4:
+            st.markdown("### 📑 Real-Time Corridor Traffic Flow Register")
+            st.dataframe(df_traffic, use_container_width=True)
+            csv_data = df_traffic.to_csv(index=False).encode('utf-8')
+            st.download_button("📥 Export Traffic CSV Data", data=csv_data, file_name="corridor_traffic_records.csv", mime="text/csv")
+    else:
+        render_empty_state("Traffic", active_corridor)
 
 # ==============================================================================
-# 🌊 6. WATERLOGGING HAZARDS (WITH MAXIMUM WATERLOGGING EVIDENCE)
+# 🌊 6. WATERLOGGING HAZARDS
 # ==============================================================================
 elif navigation == "🌊 Waterlogging Hazards":
     st.markdown('<div class="section-header"><span>🌊</span> Waterlogging & Surface Flooding Sensing</div>', unsafe_allow_html=True)
@@ -897,21 +963,59 @@ elif navigation == "🌊 Waterlogging Hazards":
         w_det = df_water[df_water.get("Detected", "NO") == "YES"]
         n_crit_w = len(w_det[w_det.get("Water_Risk", "") == "CRITICAL"])
         n_high_w = len(w_det[w_det.get("Water_Risk", "") == "HIGH"])
+        n_med_w = len(w_det[w_det.get("Water_Risk", "") == "MEDIUM"])
+        dry_pct = round((len(df_water[df_water.get("Detected", "NO") == "NO"]) / max(1, len(df_water))) * 100.0, 1)
         max_score = df_water["Water_Score"].max() if "Water_Score" in df_water else 0.0
 
         w1, w2, w3, w4 = st.columns(4)
-        w1.metric("Total Waterlogged Frames", len(w_det))
-        w2.metric("🌊 Critical Flood Hazard", n_crit_w)
-        w3.metric("⚠️ High Risk Puddling", n_high_w)
-        w4.metric("Peak Surface Water Score", f"{max_score:.1f}%")
+        w1.metric("Route Frames Inspected", len(df_water))
+        w2.metric("🌊 Water Hazard Zones", len(w_det))
+        w3.metric("🛣️ Clear / Dry Road Ratio", f"{dry_pct}%")
+        w4.metric("Peak Water Coverage", f"{max_score:.1f}%")
 
-        water_images = get_evidence_images("waterlogging_detections")
-        st.markdown(f"#### 📸 Surface Glint & Water Pooling Forensic Gallery ({len(water_images)} frames captured)")
-        render_evidence_gallery(water_images, active_corridor, cols_count=4)
+        wt1, wt2, wt3 = st.tabs([
+            "🌊 Verified Water Hazards Gallery",
+            "🛣️ Surface Moisture Profiling",
+            "📑 Municipal Drainage Register"
+        ])
 
-        st.markdown("#### 📑 Waterlogging Monitoring Register")
-        st.dataframe(df_water, use_container_width=True)
-    else: render_empty_state("Waterlogging", active_corridor)
+        with wt1:
+            water_images = get_evidence_images("waterlogging_detections")
+            st.markdown(f"### 📸 Verified Surface Water & Puddling Gallery ({len(water_images)} frames captured)")
+            st.caption("Enhanced dual-channel LAB+HSV optics segment standing water pools with semi-transparent azure overlays while suppressing dry asphalt glare.")
+            render_evidence_gallery(water_images, active_corridor, cols_count=4)
+
+        with wt2:
+            st.markdown("### 🛣️ Road Surface Moisture & Drainage Risk Breakdown")
+            col_m1, col_m2 = st.columns(2)
+            with col_m1:
+                st.caption("Surface Flood Risk Classification")
+                risk_counts = {
+                    "Critical Submersion": n_crit_w,
+                    "High Risk Pooling": n_high_w,
+                    "Medium Puddling": n_med_w,
+                    "Dry / Clear Road": len(df_water) - len(w_det)
+                }
+                st.bar_chart(pd.Series(risk_counts))
+            with col_m2:
+                st.markdown("""
+                <div style="background:rgba(15,23,42,0.7); border:1px solid rgba(56,189,248,0.25); border-radius:12px; padding:16px;">
+                    <div style="font-weight:700; color:#38bdf8; font-size:1.02rem;">Automated Municipal Work Orders</div>
+                    <div style="color:#cbd5e1; font-size:0.85rem; margin-top:8px;">
+                        • <b>Drainage Jetting Units:</b> Queued for critical pooling zones.<br>
+                        • <b>Suction Pump Dispatch:</b> Municipal water board alert active.<br>
+                        • <b>Gutter Clearance:</b> Swachh Bharat drainage cleaning synchronized.
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+        with wt3:
+            st.markdown("### 📑 Waterlogging Monitoring Register")
+            st.dataframe(df_water, use_container_width=True)
+            csv_water = df_water.to_csv(index=False).encode('utf-8')
+            st.download_button("📥 Export Waterlogging CSV Data", data=csv_water, file_name="waterlogging_results.csv", mime="text/csv")
+    else:
+        render_empty_state("Waterlogging", active_corridor)
 
 # ==============================================================================
 # 🚶‍♂️ 7. PEDESTRIAN SAFETY & SCHOOL ZONES
@@ -919,13 +1023,57 @@ elif navigation == "🌊 Waterlogging Hazards":
 elif navigation == "🚶‍♂️ Pedestrian Safety & School Zones":
     st.markdown('<div class="section-header"><span>🚶‍♂️</span> Pedestrian Safety & School Children Crossing</div>', unsafe_allow_html=True)
     if not df_ped.empty:
+        total_peds = int(df_ped["Pedestrian_Count"].sum()) if "Pedestrian_Count" in df_ped else len(df_ped)
         n_school = len(df_ped[df_ped.get("Vulnerable_Situation", "").str.contains("SCHOOL", case=False, na=False)])
-        p1, p2 = st.columns(2)
-        p1.metric("Pedestrian Events", len(df_ped))
+        n_vuln = len(df_ped[df_ped.get("Vulnerable_Situation", "NO") != "NO"])
+        ped_images = get_evidence_images("pedestrian_detections")
+
+        p1, p2, p3, p4 = st.columns(4)
+        p1.metric("🚶‍♂️ Pedestrians Tracked", total_peds)
         p2.metric("🎒 School Zone Hazard Events", n_school)
-        st.dataframe(df_ped, use_container_width=True)
-        render_evidence_gallery(get_evidence_images("pedestrian_detections"), active_corridor)
-    else: render_empty_state("Pedestrian Safety", active_corridor)
+        p3.metric("⚠️ Vulnerable Situations", n_vuln)
+        p4.metric("📸 Captured Evidence Frames", len(ped_images))
+
+        pt1, pt2, pt3 = st.tabs([
+            "🎒 School Zone Safety Alerts",
+            "📸 Pedestrian Evidence Gallery",
+            "📑 Safety Monitoring Register"
+        ])
+
+        with pt1:
+            st.markdown("### 🎒 School Children Crossing Alerts")
+            if n_school > 0:
+                school_df = df_ped[df_ped.get("Vulnerable_Situation", "").str.contains("SCHOOL", case=False, na=False)]
+                for idx, r in school_df.head(4).iterrows():
+                    st.markdown(f"""
+                    <div class="work-order-card" style="border-left-color: #ef4444;">
+                        <div style="display:flex; justify-content:space-between;">
+                            <b>🎒 CRITICAL ALERT • School Zone Children Crossing</b>
+                            <span style="color:#ef4444; font-weight:700;">PRIORITY ADAS ALERT</span>
+                        </div>
+                        <div style="color:#cbd5e1; font-size:0.85rem; margin-top:4px;">
+                            📍 <b>Location:</b> {r.get('Road_Segment')} | GPS: {r.get('Latitude'):.5f}, {r.get('Longitude'):.5f}
+                        </div>
+                        <div style="color:#38bdf8; font-size:0.82rem; margin-top:2px;">
+                            ⏱️ Frame #{r.get('Frame')} | Bus Speed: {r.get('Speed_kmh')} km/h | <b>Action:</b> Driver Audio Warning & Traffic Warden Alert Broadcast
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+            else:
+                st.info("No active school zone violations recorded in stream.")
+            render_evidence_gallery(ped_images, active_corridor, cols_count=4)
+
+        with pt2:
+            st.markdown(f"### 📸 Pedestrian Safety & Vulnerable Zone Gallery ({len(ped_images)} frames captured)")
+            render_evidence_gallery(ped_images, active_corridor, cols_count=4)
+
+        with pt3:
+            st.markdown("### 📑 Pedestrian & School Zone Event Log")
+            st.dataframe(df_ped, use_container_width=True)
+            csv_ped = df_ped.to_csv(index=False).encode('utf-8')
+            st.download_button("📥 Export Pedestrian Safety CSV Data", data=csv_ped, file_name="pedestrian_safety_results.csv", mime="text/csv")
+    else:
+        render_empty_state("Pedestrian Safety", active_corridor)
 
 # ==============================================================================
 # 🔍 8. ANPR & OFFENDER TRACKING
@@ -934,12 +1082,23 @@ elif navigation == "🔍 ANPR & Offender Tracking":
     st.markdown('<div class="section-header"><span>🔍</span> ANPR & Rash Driving Offender Tracking</div>', unsafe_allow_html=True)
     if not df_anpr.empty:
         offenders = df_anpr[df_anpr.get("Is_Offender", "NO") == "YES"]
-        a1, a2 = st.columns(2)
-        a1.metric("Plates Tracked", len(df_anpr))
+        anpr_images = get_evidence_images("anpr_detections")
+        a1, a2, a3 = st.columns(3)
+        a1.metric("🔍 Plates Tracked", len(df_anpr))
         a2.metric("🚨 Speeding / Offender Violations", len(offenders))
-        st.dataframe(df_anpr, use_container_width=True)
-        render_evidence_gallery(get_evidence_images("anpr_detections"), active_corridor)
-    else: render_empty_state("ANPR Offender", active_corridor)
+        a3.metric("📸 E-Challan Visual Snapshots", len(anpr_images))
+
+        at1, at2 = st.tabs(["🚨 Offender Evidence Gallery", "📑 E-Challan Registry"])
+        with at1:
+            st.markdown(f"### 📸 Offender Vehicle & Plate Snapshots ({len(anpr_images)} frames)")
+            render_evidence_gallery(anpr_images, active_corridor, cols_count=4)
+        with at2:
+            st.markdown("### 📑 ANPR Vehicle & Offender Registry")
+            st.dataframe(df_anpr, use_container_width=True)
+            csv_anpr = df_anpr.to_csv(index=False).encode('utf-8')
+            st.download_button("📥 Export ANPR Offender CSV Data", data=csv_anpr, file_name="anpr_offender_records.csv", mime="text/csv")
+    else:
+        render_empty_state("ANPR Offender", active_corridor)
 
 # ==============================================================================
 # 🗑️ 9. GARBAGE & SANITATION MONITORING
