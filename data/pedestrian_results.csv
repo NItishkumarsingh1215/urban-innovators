@@ -1,85 +1,85 @@
 Frame,Timestamp,Pedestrian_Count,School_Children_Count,Vulnerable_Situation,Latitude,Longitude,Road_Segment,Bus_ID,Speed_kmh
-9,2026-09-14 07:31:33,0,0,NO,26.758762,83.36973,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,31.4
-18,2026-09-14 07:31:34,0,0,NO,26.758649,83.369817,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,32.8
-27,2026-09-14 07:31:34,0,0,NO,26.758464,83.369962,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,34.2
-36,2026-09-14 07:31:35,0,0,NO,26.758211,83.370159,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,35.4
-45,2026-09-14 07:31:35,0,0,NO,26.757895,83.370406,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,36.5
-54,2026-09-14 07:31:36,0,0,NO,26.757523,83.370695,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,37.6
-63,2026-09-14 07:31:37,0,0,NO,26.757104,83.371022,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,38.4
-72,2026-09-14 07:31:37,0,0,NO,26.756647,83.371378,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,39.1
-81,2026-09-14 07:31:38,0,0,NO,26.756162,83.371756,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,39.6
-90,2026-09-14 07:31:38,0,0,NO,26.755661,83.372147,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,39.9
-99,2026-09-14 07:31:39,0,0,NO,26.755153,83.372542,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,40.0
-108,2026-09-14 07:31:39,0,0,NO,26.754651,83.372934,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,39.9
-117,2026-09-14 07:31:39,0,0,NO,26.754166,83.373312,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,39.6
-126,2026-09-14 07:31:40,0,0,NO,26.753708,83.373669,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,39.1
-135,2026-09-14 07:31:40,0,0,NO,26.753288,83.373996,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,38.4
-144,2026-09-14 07:31:41,0,0,NO,26.752915,83.374287,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,37.6
-153,2026-09-14 07:31:41,0,0,NO,26.752597,83.374535,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,36.6
-162,2026-09-14 07:31:42,0,0,NO,26.752342,83.374733,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,35.4
-171,2026-09-14 07:31:42,0,0,NO,26.752155,83.374879,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,34.2
-180,2026-09-14 07:31:43,0,0,NO,26.75204,83.374969,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,32.8
-189,2026-09-14 07:31:43,0,0,NO,26.752,83.375,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,31.5
-198,2026-09-14 07:31:44,0,0,NO,26.751963,83.375058,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,30.0
-207,2026-09-14 07:31:44,0,0,NO,26.751849,83.375237,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,28.6
-216,2026-09-14 07:31:45,0,0,NO,26.751661,83.375533,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,27.2
-225,2026-09-14 07:31:45,0,0,NO,26.751402,83.37594,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,25.9
-234,2026-09-14 07:31:46,0,0,NO,26.751078,83.376449,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,24.6
-243,2026-09-14 07:31:46,0,0,NO,26.750697,83.377048,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,23.5
-252,2026-09-14 07:31:47,0,0,NO,26.750267,83.377724,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,22.5
-261,2026-09-14 07:31:47,0,0,NO,26.749797,83.378461,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,21.6
-270,2026-09-14 07:31:48,0,0,NO,26.749299,83.379244,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.9
-279,2026-09-14 07:31:48,0,0,NO,26.748783,83.380055,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.4
-288,2026-09-14 07:31:48,0,0,NO,26.748261,83.380876,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.1
-297,2026-09-14 07:31:49,0,0,NO,26.747743,83.381689,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.0
-306,2026-09-14 07:31:49,0,0,NO,26.747243,83.382475,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.1
-315,2026-09-14 07:31:50,0,0,NO,26.746771,83.383217,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.4
-324,2026-09-14 07:31:50,0,0,NO,26.746337,83.383899,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.9
-333,2026-09-14 07:31:51,0,0,NO,26.745952,83.384504,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,21.6
-342,2026-09-14 07:31:51,0,0,NO,26.745623,83.385021,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,22.4
-351,2026-09-14 07:31:52,0,0,NO,26.745358,83.385437,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,23.4
-360,2026-09-14 07:31:52,0,0,NO,26.745164,83.385743,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,24.5
-369,2026-09-14 07:31:53,0,0,NO,26.745043,83.385932,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,25.8
-378,2026-09-14 07:31:53,0,0,NO,26.745,83.386,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,27.1
-387,2026-09-14 07:31:53,0,0,NO,26.744968,83.38606,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,28.5
-396,2026-09-14 07:31:54,0,0,NO,26.744866,83.386251,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,29.9
-405,2026-09-14 07:31:54,0,0,NO,26.744695,83.386571,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,31.4
-414,2026-09-14 07:31:55,0,0,NO,26.74446,83.387012,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,32.8
-423,2026-09-14 07:31:55,0,0,NO,26.744166,83.387564,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,34.1
-432,2026-09-14 07:31:56,0,0,NO,26.743819,83.388215,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,35.4
-441,2026-09-14 07:31:56,0,0,NO,26.743427,83.38895,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,36.5
-450,2026-09-14 07:31:57,0,0,NO,26.742998,83.389753,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,37.5
-459,2026-09-14 07:31:57,0,0,NO,26.742543,83.390606,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,38.4
-468,2026-09-14 07:31:58,0,0,NO,26.742072,83.39149,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,39.1
-477,2026-09-14 07:31:58,0,0,NO,26.741594,83.392386,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,39.6
-486,2026-09-14 07:31:59,0,0,NO,26.741121,83.393273,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,39.9
-495,2026-09-14 07:31:59,0,0,NO,26.740663,83.394131,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,40.0
-504,2026-09-14 07:31:59,0,0,NO,26.740231,83.394942,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,39.9
-513,2026-09-14 07:32:00,0,0,NO,26.739833,83.395688,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,39.6
-522,2026-09-14 07:32:00,0,0,NO,26.739479,83.396351,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,39.1
-531,2026-09-14 07:32:01,0,0,NO,26.739177,83.396918,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,38.5
-540,2026-09-14 07:32:01,0,0,NO,26.738934,83.397375,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,37.6
-549,2026-09-14 07:32:02,0,0,NO,26.738754,83.397712,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,36.6
-558,2026-09-14 07:32:02,0,0,NO,26.738642,83.397922,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,35.5
-567,2026-09-14 07:32:03,0,0,NO,26.7386,83.398,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,34.2
-576,2026-09-14 07:32:03,0,0,NO,26.73852,83.398094,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,32.9
-585,2026-09-14 07:32:04,0,0,NO,26.738252,83.398407,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,31.5
-594,2026-09-14 07:32:04,0,0,NO,26.737801,83.398934,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,30.1
-603,2026-09-14 07:32:04,0,0,NO,26.737177,83.399664,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,28.7
-612,2026-09-14 07:32:05,0,0,NO,26.736395,83.400579,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,27.3
-621,2026-09-14 07:32:05,0,0,NO,26.735471,83.401659,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,25.9
-630,2026-09-14 07:32:06,0,0,NO,26.734427,83.402881,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,24.7
-639,2026-09-14 07:32:06,0,0,NO,26.733285,83.404216,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,23.5
-648,2026-09-14 07:32:07,0,0,NO,26.732071,83.405636,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,22.5
-657,2026-09-14 07:32:07,0,0,NO,26.730812,83.407109,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,21.6
-666,2026-09-14 07:32:08,0,0,NO,26.729536,83.408601,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.9
-675,2026-09-14 07:32:08,0,0,NO,26.728271,83.41008,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.4
-684,2026-09-14 07:32:08,0,0,NO,26.727046,83.411513,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.1
-693,2026-09-14 07:32:09,0,0,NO,26.725888,83.412868,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.0
-702,2026-09-14 07:32:09,0,0,NO,26.724823,83.414114,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.1
-711,2026-09-14 07:32:10,0,0,NO,26.723874,83.415223,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.4
-720,2026-09-14 07:32:10,0,0,NO,26.723063,83.416172,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.9
-729,2026-09-14 07:32:11,0,0,NO,26.722407,83.416939,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,21.5
-738,2026-09-14 07:32:11,0,0,NO,26.721922,83.417507,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,22.4
-747,2026-09-14 07:32:12,0,0,NO,26.721618,83.417863,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,23.4
-756,2026-09-14 07:32:12,0,0,NO,26.721501,83.417999,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,24.5
+9,2026-09-14 09:20:42,0,0,NO,26.758762,83.36973,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,31.4
+18,2026-09-14 09:20:43,0,0,NO,26.758649,83.369817,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,32.8
+27,2026-09-14 09:20:44,0,0,NO,26.758464,83.369962,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,34.2
+36,2026-09-14 09:20:44,0,0,NO,26.758211,83.370159,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,35.4
+45,2026-09-14 09:20:45,0,0,NO,26.757895,83.370406,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,36.5
+54,2026-09-14 09:20:45,0,0,NO,26.757523,83.370695,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,37.6
+63,2026-09-14 09:20:46,0,0,NO,26.757104,83.371022,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,38.4
+72,2026-09-14 09:20:46,0,0,NO,26.756647,83.371378,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,39.1
+81,2026-09-14 09:20:47,0,0,NO,26.756162,83.371756,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,39.6
+90,2026-09-14 09:20:48,0,0,NO,26.755661,83.372147,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,39.9
+99,2026-09-14 09:20:48,0,0,NO,26.755153,83.372542,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,40.0
+108,2026-09-14 09:20:49,0,0,NO,26.754651,83.372934,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,39.9
+117,2026-09-14 09:20:49,0,0,NO,26.754166,83.373312,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,39.6
+126,2026-09-14 09:20:50,0,0,NO,26.753708,83.373669,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,39.1
+135,2026-09-14 09:20:50,0,0,NO,26.753288,83.373996,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,38.4
+144,2026-09-14 09:20:51,0,0,NO,26.752915,83.374287,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,37.6
+153,2026-09-14 09:20:51,0,0,NO,26.752597,83.374535,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,36.6
+162,2026-09-14 09:20:52,0,0,NO,26.752342,83.374733,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,35.4
+171,2026-09-14 09:20:52,0,0,NO,26.752155,83.374879,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,34.2
+180,2026-09-14 09:20:53,0,0,NO,26.75204,83.374969,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,32.8
+189,2026-09-14 09:20:53,0,0,NO,26.752,83.375,Gorakhpur Railway Station -> Golghar Commercial Center,UPSRTC-UP53-8821,31.5
+198,2026-09-14 09:20:54,0,0,NO,26.751963,83.375058,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,30.0
+207,2026-09-14 09:20:54,0,0,NO,26.751849,83.375237,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,28.6
+216,2026-09-14 09:20:55,0,0,NO,26.751661,83.375533,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,27.2
+225,2026-09-14 09:20:55,0,0,NO,26.751402,83.37594,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,25.9
+234,2026-09-14 09:20:56,0,0,NO,26.751078,83.376449,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,24.6
+243,2026-09-14 09:20:56,0,0,NO,26.750697,83.377048,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,23.5
+252,2026-09-14 09:20:57,0,0,NO,26.750267,83.377724,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,22.5
+261,2026-09-14 09:20:57,0,0,NO,26.749797,83.378461,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,21.6
+270,2026-09-14 09:20:58,0,0,NO,26.749299,83.379244,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.9
+279,2026-09-14 09:20:58,0,0,NO,26.748783,83.380055,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.4
+288,2026-09-14 09:20:59,0,0,NO,26.748261,83.380876,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.1
+297,2026-09-14 09:20:59,0,0,NO,26.747743,83.381689,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.0
+306,2026-09-14 09:21:00,0,0,NO,26.747243,83.382475,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.1
+315,2026-09-14 09:21:00,0,0,NO,26.746771,83.383217,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.4
+324,2026-09-14 09:21:00,0,0,NO,26.746337,83.383899,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,20.9
+333,2026-09-14 09:21:01,0,0,NO,26.745952,83.384504,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,21.6
+342,2026-09-14 09:21:02,0,0,NO,26.745623,83.385021,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,22.4
+351,2026-09-14 09:21:02,0,0,NO,26.745358,83.385437,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,23.4
+360,2026-09-14 09:21:02,0,0,NO,26.745164,83.385743,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,24.5
+369,2026-09-14 09:21:03,0,0,NO,26.745043,83.385932,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,25.8
+378,2026-09-14 09:21:03,0,0,NO,26.745,83.386,Golghar Commercial Center -> Civil Lines / Commissioner Office,UPSRTC-UP53-8821,27.1
+387,2026-09-14 09:21:04,0,0,NO,26.744968,83.38606,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,28.5
+396,2026-09-14 09:21:04,0,0,NO,26.744866,83.386251,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,29.9
+405,2026-09-14 09:21:05,0,0,NO,26.744695,83.386571,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,31.4
+414,2026-09-14 09:21:05,0,0,NO,26.74446,83.387012,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,32.8
+423,2026-09-14 09:21:06,0,0,NO,26.744166,83.387564,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,34.1
+432,2026-09-14 09:21:06,0,0,NO,26.743819,83.388215,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,35.4
+441,2026-09-14 09:21:07,0,0,NO,26.743427,83.38895,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,36.5
+450,2026-09-14 09:21:07,0,0,NO,26.742998,83.389753,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,37.5
+459,2026-09-14 09:21:08,0,0,NO,26.742543,83.390606,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,38.4
+468,2026-09-14 09:21:08,0,0,NO,26.742072,83.39149,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,39.1
+477,2026-09-14 09:21:09,0,0,NO,26.741594,83.392386,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,39.6
+486,2026-09-14 09:21:09,0,0,NO,26.741121,83.393273,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,39.9
+495,2026-09-14 09:21:09,0,0,NO,26.740663,83.394131,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,40.0
+504,2026-09-14 09:21:10,0,0,NO,26.740231,83.394942,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,39.9
+513,2026-09-14 09:21:10,0,0,NO,26.739833,83.395688,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,39.6
+522,2026-09-14 09:21:11,0,0,NO,26.739479,83.396351,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,39.1
+531,2026-09-14 09:21:11,0,0,NO,26.739177,83.396918,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,38.5
+540,2026-09-14 09:21:12,0,0,NO,26.738934,83.397375,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,37.6
+549,2026-09-14 09:21:12,0,0,NO,26.738754,83.397712,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,36.6
+558,2026-09-14 09:21:13,0,0,NO,26.738642,83.397922,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,35.5
+567,2026-09-14 09:21:13,0,0,NO,26.7386,83.398,Civil Lines / Commissioner Office -> Mohaddipur Chauraha,UPSRTC-UP53-8821,34.2
+576,2026-09-14 09:21:14,0,0,NO,26.73852,83.398094,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,32.9
+585,2026-09-14 09:21:14,0,0,NO,26.738252,83.398407,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,31.5
+594,2026-09-14 09:21:14,0,0,NO,26.737801,83.398934,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,30.1
+603,2026-09-14 09:21:15,0,0,NO,26.737177,83.399664,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,28.7
+612,2026-09-14 09:21:15,0,0,NO,26.736395,83.400579,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,27.3
+621,2026-09-14 09:21:16,0,0,NO,26.735471,83.401659,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,25.9
+630,2026-09-14 09:21:16,0,0,NO,26.734427,83.402881,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,24.7
+639,2026-09-14 09:21:17,0,0,NO,26.733285,83.404216,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,23.5
+648,2026-09-14 09:21:17,0,0,NO,26.732071,83.405636,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,22.5
+657,2026-09-14 09:21:17,0,0,NO,26.730812,83.407109,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,21.6
+666,2026-09-14 09:21:18,0,0,NO,26.729536,83.408601,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.9
+675,2026-09-14 09:21:18,0,0,NO,26.728271,83.41008,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.4
+684,2026-09-14 09:21:19,0,0,NO,26.727046,83.411513,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.1
+693,2026-09-14 09:21:19,0,0,NO,26.725888,83.412868,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.0
+702,2026-09-14 09:21:20,0,0,NO,26.724823,83.414114,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.1
+711,2026-09-14 09:21:20,0,0,NO,26.723874,83.415223,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.4
+720,2026-09-14 09:21:20,0,0,NO,26.723063,83.416172,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,20.9
+729,2026-09-14 09:21:21,0,0,NO,26.722407,83.416939,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,21.5
+738,2026-09-14 09:21:21,0,0,NO,26.721922,83.417507,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,22.4
+747,2026-09-14 09:21:22,0,0,NO,26.721618,83.417863,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,23.4
+756,2026-09-14 09:21:22,0,0,NO,26.721501,83.417999,Mohaddipur Chauraha -> AIIMS Gorakhpur Transit Stop,UPSRTC-UP53-8821,24.5
